@@ -1,24 +1,17 @@
-import os, sys
-from distutils import core, sysconfig, util
+from distutils.core import setup, Extension
 
-directory = 'build/lib.%s-%s' % (util.get_platform(), sys.version[:3])
-
-core.setup(
+setup(
     name='placeholder',
-    version='0.1',
+    version='0.2',
     description='Operator overloading for fast anonymous functions.',
-    long_description='''
-    A placeholder object uses operator overloading to create partially bound functions on-the-fly.
-    When used in a binary expression, it will return a callable object with the other argument bound.
-    It's useful for replacing lambda when doing functional programming.
-    ''',
+    long_description=open('__init__.py').read().split('"""\n')[1],
     author='Aric Coady',
     author_email='aric.coady@gmail.com',
-    package_dir = {'placeholder': ''},
+    package_dir={'placeholder': ''},
     py_modules=['placeholder.__init__'],
-    ext_modules=[core.Extension('placeholder.partial', ['partial.c'])],
+    ext_modules=[Extension('placeholder.partial', ['partial.c'])],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: Python Software Foundation License',
     ],
 )

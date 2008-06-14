@@ -4,10 +4,10 @@ functions on-the-fly.  When used in a binary expression, it will return a
 callable object with the other argument bound.  It's useful for replacing
 lambda when doing functional programming.  For example:
 
-    __[key]     ==      operator.itemgetter(key)
-    __.name     ==      operator.attrgetter(name)
-    (1 + __)    ==      lambda obj: 1 + obj
-    (__ - 1)    ==      lambda obj: obj - 1
+    __[key]     ==   operator.itemgetter(key)
+    __.name     ==   operator.attrgetter('name')
+    (1 + __)    ==   lambda obj: 1 + obj
+    (__ - 1)    ==   lambda obj: obj - 1
 
 where '__' is a placeholder instance (it can have any name of course).
 
@@ -17,13 +17,15 @@ so it is also much faster than using a python function.
 See tests for more example usage.
 """
 
-from ctypes import c_void_p, cast, pythonapi
-from partial import partial
+import ctypes
+import partial
+cdll = ctypes.CDLL(partial.__file__)
 
 def factory(name, **kwargs):
-    "Return partial object from the python api."
-    func = getattr(pythonapi, name)
-    return partial(cast(func, c_void_p).value, **kwargs)
+    "Return partial object from the python api or the partial dll itself."
+    lib = ctypes.pythonapi if name.startswith('Py') else cdll
+    pointer = ctypes.cast(getattr(lib, name), ctypes.c_void_p)
+    return partial.partial(name, pointer.value, **kwargs)
 
 class placeholder(object):
     __slots__ = ()
@@ -64,6 +66,10 @@ class placeholder(object):
         return factory('PyNumber_Divmod', right=other)
     def __rdivmod__(self, other):
         return factory('PyNumber_Divmod', left=other)
+    def __pow__(self, other):
+        return factory('Number_Power', right=other)
+    def __rpow__(self, other):
+        return factory('Number_Power', left=other)
 
     def __lshift__(self, other):
         return factory('PyNumber_Lshift', right=other)
@@ -85,5 +91,18 @@ class placeholder(object):
         return factory('PyNumber_Or', right=other)
     def __ror__(self, other):
         return factory('PyNumber_Or', left=other)
+
+    def __lt__(self, other):
+        return factory('Object_LT', right=other)
+    def __le__(self, other):
+        return factory('Object_LE', right=other)
+    def __eq__(self, other):
+        return factory('Object_EQ', right=other)
+    def __ne__(self, other):
+        return factory('Object_NE', right=other)
+    def __gt__(self, other):
+        return factory('Object_GT', right=other)
+    def __ge__(self, other):
+        return factory('Object_GE', right=other)
 
 __ = placeholder()
