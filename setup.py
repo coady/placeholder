@@ -2,7 +2,7 @@ from distutils.core import setup, Extension
 
 setup(
     name='placeholder',
-    version='0.2',
+    version='0.2.1',
     description='Operator overloading for fast anonymous functions.',
     long_description=open('__init__.py').read().split('"""\n')[1],
     author='Aric Coady',

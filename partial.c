@@ -104,10 +104,6 @@ static PyTypeObject PartialType = {
     0,                      /* tp_descr_set */
     0,                      /* tp_dictoffset */
     (initproc)partial_init, /* tp_init */
-    0,                      /* tp_alloc */
-    PyType_GenericNew,      /* tp_new */
-    0,                      /* tp_free */
-    0,                      /* tp_is_gc */
 };
 
 /* support for binary operators with a slightly different API signature */
@@ -122,6 +118,7 @@ PyObject* Object_GE(PyObject* left, PyObject* right) { return PyObject_RichCompa
 
 PyMODINIT_FUNC initpartial(void)
 {
+    PartialType.tp_new = PyType_GenericNew;
     if (PyType_Ready(&PartialType))
         return;
     PyObject* mod = Py_InitModule("partial", NULL);
