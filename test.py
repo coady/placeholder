@@ -24,7 +24,7 @@ class TestCase(unittest.TestCase):
         self.assertRaises(TypeError, __ + None, 0)
         assert (__ - 1)(2) == (3 - __)(2) == 1
         self.assertRaises(TypeError, __ + 1, 2, x=None)
-        assert [x+1 for x in range(3)] == map(__ + 1, range(3))
+        assert [x+1 for x in range(3)] == list(map(__ + 1, range(3)))
         assert (__ * 2)(3) == (2 * __)(3) == 6
         assert (__ / 2)(3) == (3 / __)(2) == 1.5
         assert (__ // 2)(3) == (3 // __)(2) == 1

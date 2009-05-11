@@ -2,7 +2,7 @@
 
 setup(
     name='placeholder',
-    version='0.3',
+    version='0.3.1',
     description='Operator overloading for fast anonymous functions.',
     long_description=open('placeholder.py').read().split('"""\n')[1],
     author='Aric Coady',
