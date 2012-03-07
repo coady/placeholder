@@ -1,23 +1,27 @@
 """
-A placeholder object uses operator overloading to create partially bound
+A **placeholder** object uses operator overloading to create partially bound
 functions on-the-fly.  When used in a binary expression, it will return a
 callable object with the other argument bound.  It's useful for replacing
 lambda when doing functional programming.  For example:
 
-    __[key]     ==   operator.itemgetter(key)
-    __.name     ==   operator.attrgetter('name')
-    (1 + __)    ==   (1).__add__ or partial(operator.add, 1)
-    (__ - 1)    ==   (1).__rsub__ or lambda obj: obj - 1
+ * __[key]     ==   operator.itemgetter(key)
+ * __.name     ==   operator.attrgetter('name')
+ * (1 + __)    ==   (1).__add__ or partial(operator.add, 1)
+ * (__ - 1)    ==   (1).__rsub__ or lambda obj: obj - 1
 
-where '__' is a placeholder instance (it can have any name of course).
+|
+
+where **__** is a placeholder instance (it can have any name of course).
 
 See tests for more example usage.
+Supported on Python 2.5 or higher, including Python 3.
 """
 
 import operator
 from functools import partial
 
 class placeholder(object):
+    "Create partially bound function."
     __slots__ = ()
 
     def __getattribute__(self, name):
