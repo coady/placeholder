@@ -3,7 +3,7 @@ import placeholder
 
 setup(
     name='placeholder',
-    version='0.3.1+',
+    version='0.4',
     description='Operator overloading for fast anonymous functions.',
     long_description=placeholder.__doc__,
     author='Aric Coady',
