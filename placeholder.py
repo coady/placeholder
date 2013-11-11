@@ -24,11 +24,13 @@ In addition to operator overloading, functions can be supplied explicitly with p
 but each can of course be instantiated and bound to any desired name.
 
 See tests for more example usage.
-Supported on Python 2.5 or higher, including Python 3.
+Supported on Python 2.6 or higher, including Python 3.
 """
 
 import operator, itertools
 from functools import partial
+
+__version__ = '0.4.1'
 
 class placeholder(object):
     "Create partially bound function."

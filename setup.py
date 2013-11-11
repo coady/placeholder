@@ -3,7 +3,7 @@ import placeholder
 
 setup(
     name='placeholder',
-    version='0.4',
+    version=placeholder.__version__,
     description='Operator overloading for fast anonymous functions.',
     long_description=placeholder.__doc__,
     author='Aric Coady',
@@ -16,12 +16,12 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.1',
         'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
 )
