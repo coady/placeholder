@@ -9,11 +9,12 @@ setup(
     author='Aric Coady',
     author_email='aric.coady@gmail.com',
     url='https://bitbucket.org/coady/placeholder',
+    license='Apache Software License',
     py_modules=['placeholder'],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
-        'License :: OSI Approved :: Python Software Foundation License',
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python :: 2',
         'Programming Language :: Python :: 2.5',
         'Programming Language :: Python :: 2.6',
