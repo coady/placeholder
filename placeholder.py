@@ -27,10 +27,12 @@ See tests for more example usage.
 Supported on Python 2.6 or higher, including Python 3.
 """
 
-import operator, itertools
+import operator
+import itertools
 from functools import partial
 
 __version__ = '0.4.1'
+
 
 class placeholder(object):
     "Create partially bound function."
@@ -38,10 +40,8 @@ class placeholder(object):
 
     def __getattribute__(self, name):
         return operator.attrgetter(name)
-    def __getitem__(self, keys):
-        if not isinstance(keys, tuple):
-            keys = keys,
-        return operator.itemgetter(*keys)
+    def __getitem__(self, key):
+        return operator.itemgetter(*(key if isinstance(key, tuple) else [key]))
 
     def __add__(self, other):
         return getattr(other, '__radd__', lambda left: left + other)
@@ -115,6 +115,7 @@ class placeholder(object):
         return getattr(other, '__le__', partial(operator.le, other))
 
 __ = placeholder()
+
 
 class composer(tuple):
     "Create composite function, by applying input functions successively."

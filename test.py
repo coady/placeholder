@@ -3,6 +3,7 @@ from __future__ import division
 import unittest
 from placeholder import placeholder, composer, __, ___
 
+
 class TestCase(unittest.TestCase):
 
     def testObject(self):
@@ -11,7 +12,7 @@ class TestCase(unittest.TestCase):
         self.assertRaises(TypeError, placeholder, None)
 
     def testGetters(self):
-        assert (___.__class__)(None) is type(None)
+        assert (___.__class__)(None) is None.__class__
         self.assertRaises(AttributeError, ___.name, None)
         assert (___[0])({0: None}) is (___[0])([None]) is None
         self.assertRaises(KeyError, ___[0], {})
@@ -24,14 +25,13 @@ class TestCase(unittest.TestCase):
         self.assertRaises(TypeError, ___ + None, 0)
         assert (___ - 1)(2) == (3 - ___)(2) == 1
         self.assertRaises(TypeError, ___ + 1, 2, x=None)
-        assert [x+1 for x in range(3)] == list(map(___ + 1, range(3)))
+        assert [x + 1 for x in range(3)] == list(map(___ + 1, range(3)))
         assert (___ * 2)(3) == (2 * ___)(3) == 6
         assert (___ / 2)(3) == (3 / ___)(2) == 1.5
         assert (___ // 2)(3) == (3 // ___)(2) == 1
         assert (___ % 2)(3) == (3 % ___)(2) == 1
         assert divmod(___, 2)(3) == divmod(3, ___)(2) == (1, 1)
         assert (___ ** 3)(2) == (2 ** ___)(3) == 8
-        
         assert (___ + [1])([0]) == ([0] + ___)([1]) == [0, 1]
         assert (___ * [0])(2) == ([0] * ___)(2) == [0, 0]
 
