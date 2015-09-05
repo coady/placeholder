@@ -8,11 +8,21 @@ __version__ = '0.4.1'
 class placeholder(object):
     "Create partially bound function."
     __slots__ = ()
+    __getattribute__ = operator.attrgetter
+    __getitem__ = operator.itemgetter
+    __call__ = operator.methodcaller
 
-    def __getattribute__(self, name):
-        return operator.attrgetter(name)
-    def __getitem__(self, key):
-        return operator.itemgetter(*(key if isinstance(key, tuple) else [key]))
+    def __iter__(self):
+        raise TypeError("'placeholder' object is not iterable")
+    def __contains__(self, item):
+        raise TypeError("argument of type 'placeholder' is not iterable")
+
+    def __neg__(self):
+        return operator.neg
+    def __pos__(self):
+        return operator.pos
+    def __invert__(self):
+        return operator.invert
 
     def __add__(self, other):
         return getattr(other, '__radd__', lambda left: left + other)
@@ -22,14 +32,11 @@ class placeholder(object):
         return getattr(other, '__rsub__', lambda left: left - other)
     def __rsub__(self, other):
         return getattr(other, '__sub__', partial(operator.sub, other))
+
     def __mul__(self, other):
         return getattr(other, '__rmul__', lambda left: left * other)
     def __rmul__(self, other):
         return getattr(other, '__mul__', partial(operator.mul, other))
-    def __div__(self, other):
-        return getattr(other, '__rdiv__', lambda left: left / other)
-    def __rdiv__(self, other):
-        return getattr(other, '__div__', partial(operator.div, other))
     def __floordiv__(self, other):
         return getattr(other, '__rfloordiv__', lambda left: left // other)
     def __rfloordiv__(self, other):
@@ -38,6 +45,8 @@ class placeholder(object):
         return getattr(other, '__rtruediv__', lambda left: left / other)
     def __rtruediv__(self, other):
         return getattr(other, '__truediv__', partial(operator.truediv, other))
+    __div__, __rdiv__ = __truediv__, __rtruediv__
+
     def __mod__(self, other):
         return getattr(other, '__rmod__', lambda left: left % other)
     def __rmod__(self, other):
@@ -59,6 +68,7 @@ class placeholder(object):
         return getattr(other, '__rrshift__', lambda left: left >> other)
     def __rrshift__(self, other):
         return getattr(other, '__rshift__', partial(operator.rshift, other))
+
     def __and__(self, other):
         return getattr(other, '__rand__', lambda left: left & other)
     def __rand__(self, other):
@@ -94,10 +104,18 @@ class composer(tuple):
     def __new__(cls, *funcs):
         funcs = (func if isinstance(func, cls) else [func] for func in funcs)
         return tuple.__new__(cls, itertools.chain(*funcs))
+
     def __call__(self, value):
         for func in self:
             value = func(value)
         return value
+
+    def __neg__(self):
+        return type(self)(-__)
+    def __pos__(self):
+        return type(self)(+__)
+    def __invert__(self):
+        return type(self)(~__)
 
     def __getattribute__(self, name):
         return type(self)(self, getattr(__, name))
@@ -112,22 +130,21 @@ class composer(tuple):
         return type(self)(self, __ - other)
     def __rsub__(self, other):
         return type(self)(self, other - __)
+
     def __mul__(self, other):
         return type(self)(self, __ * other)
     def __rmul__(self, other):
         return type(self)(self, other * __)
-    def __div__(self, other):
-        return type(self)(self, __ / other)
-    def __rdiv__(self, other):
-        return type(self)(self, other / __)
     def __floordiv__(self, other):
         return type(self)(self, __ // other)
     def __rfloordiv__(self, other):
         return type(self)(self, other // __)
     def __truediv__(self, other):
-        return type(self)(self, placeholder.__truediv__(__, other))
+        return type(self)(self, __ / other)
     def __rtruediv__(self, other):
-        return type(self)(self, placeholder.__rtruediv__(__, other))
+        return type(self)(self, other / __)
+    __div__, __rdiv__ = __truediv__, __rtruediv__
+
     def __mod__(self, other):
         return type(self)(self, __ % other)
     def __rmod__(self, other):
@@ -149,6 +166,7 @@ class composer(tuple):
         return type(self)(self, __ >> other)
     def __rrshift__(self, other):
         return type(self)(self, other >> __)
+
     def __and__(self, other):
         return type(self)(self, __ & other)
     def __rand__(self, other):

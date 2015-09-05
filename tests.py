@@ -1,4 +1,3 @@
-from __future__ import division
 import pytest
 from placeholder import placeholder, composer, __, ___
 
@@ -20,6 +19,7 @@ def test_getters():
     with pytest.raises(IndexError):
         ___[0]([])
     assert sorted(enumerate('cba'), key=___[1]) == [(2, 'a'), (1, 'b'), (0, 'c')]
+    assert __('split', '.')('x.y') == ['x', 'y']
 
 
 def test_math():
@@ -64,3 +64,13 @@ def test_errors():
                 __ ** None, __ << None, __ >> None, __ & None, __ ^ None, __ | None):
         with pytest.raises(TypeError):
             obj(0)
+    with pytest.raises(TypeError):
+        list(__)
+    with pytest.raises(TypeError):
+        None in __
+
+
+def test_unary():
+    assert (-___)(1) == -1
+    assert (+___)(-1) == -1
+    assert (~___)(0) == -1

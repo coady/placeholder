@@ -20,6 +20,9 @@ It's useful for replacing lambda in functional programming, and resembles Scala'
    >>> __ - 1
    (1).__rsub__
 
+   >>> -__
+   operator.neg
+
 A ``composer`` object extends placeholders with function composition, but at a performance cost.
 In addition to operator overloading, functions can be supplied explicitly with postfix notation.
 
@@ -55,3 +58,12 @@ Tests
 100% branch coverage. ::
 
    $ py.test
+
+Changes
+==================
+0.5
+
+   * Unary operators
+   * ``__call__`` implements ``methodcaller``
+   * ``__getitem__`` supports only single argument
+   * Improved error handling
