@@ -1,9 +1,9 @@
 import pytest
-from placeholder import placeholder, composer, __, ___
+from placeholder import placeholder, F, __, ___
 
 
 def test_object():
-    assert type(___) is composer and type(__) is placeholder
+    assert type(___) is F and type(__) is placeholder
     assert placeholder()
     with pytest.raises(TypeError):
         placeholder(None)
@@ -54,9 +54,8 @@ def test_comparisons():
 
 
 def test_composition():
-    assert ___(Ellipsis) is Ellipsis
-    assert (composer(len) + 1)('') == 1
-    assert composer(len, bool)('') is False
+    F(len).__call__ is len
+    assert (F(len) + 1)('') == 1
 
 
 def test_errors():

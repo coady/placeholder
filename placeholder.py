@@ -98,17 +98,12 @@ class placeholder(object):
 __ = placeholder()
 
 
-class composer(tuple):
-    "Create composite function, by applying input functions successively."
+class F(object):
+    "Create composite function."
     __slots__ = ()
-    def __new__(cls, *funcs):
-        funcs = (func if isinstance(func, cls) else [func] for func in funcs)
-        return tuple.__new__(cls, itertools.chain(*funcs))
-
-    def __call__(self, value):
-        for func in self:
-            value = func(value)
-        return value
+    def __new__(cls, func):
+        method = staticmethod(func if cls is F else lambda arg: func(cls.__call__(arg)))
+        return object.__new__(type('F', (F,), {'__slots__': (), '__call__': method}))
 
     def __neg__(self):
         return type(self)(-__)
@@ -118,79 +113,80 @@ class composer(tuple):
         return type(self)(~__)
 
     def __getattribute__(self, name):
-        return type(self)(self, getattr(__, name))
+        return type(self)(getattr(__, name))
     def __getitem__(self, keys):
-        return type(self)(self, __[keys])
+        return type(self)(__[keys])
 
     def __add__(self, other):
-        return type(self)(self, __ + other)
+        return type(self)(__ + other)
     def __radd__(self, other):
-        return type(self)(self, other + __)
+        return type(self)(other + __)
     def __sub__(self, other):
-        return type(self)(self, __ - other)
+        return type(self)(__ - other)
     def __rsub__(self, other):
-        return type(self)(self, other - __)
+        return type(self)(other - __)
 
     def __mul__(self, other):
-        return type(self)(self, __ * other)
+        return type(self)(__ * other)
     def __rmul__(self, other):
-        return type(self)(self, other * __)
+        return type(self)(other * __)
     def __floordiv__(self, other):
-        return type(self)(self, __ // other)
+        return type(self)(__ // other)
     def __rfloordiv__(self, other):
-        return type(self)(self, other // __)
+        return type(self)(other // __)
     def __truediv__(self, other):
-        return type(self)(self, __ / other)
+        return type(self)(__ / other)
     def __rtruediv__(self, other):
-        return type(self)(self, other / __)
+        return type(self)(other / __)
     __div__, __rdiv__ = __truediv__, __rtruediv__
 
     def __mod__(self, other):
-        return type(self)(self, __ % other)
+        return type(self)(__ % other)
     def __rmod__(self, other):
-        return type(self)(self, other % __)
+        return type(self)(other % __)
     def __divmod__(self, other):
-        return type(self)(self, divmod(__, other))
+        return type(self)(divmod(__, other))
     def __rdivmod__(self, other):
-        return type(self)(self, divmod(other, __))
+        return type(self)(divmod(other, __))
     def __pow__(self, other):
-        return type(self)(self, __ ** other)
+        return type(self)(__ ** other)
     def __rpow__(self, other):
-        return type(self)(self, other ** __)
+        return type(self)(other ** __)
 
     def __lshift__(self, other):
-        return type(self)(self, __ << other)
+        return type(self)(__ << other)
     def __rlshift__(self, other):
-        return type(self)(self, other << __)
+        return type(self)(other << __)
     def __rshift__(self, other):
-        return type(self)(self, __ >> other)
+        return type(self)(__ >> other)
     def __rrshift__(self, other):
-        return type(self)(self, other >> __)
+        return type(self)(other >> __)
 
     def __and__(self, other):
-        return type(self)(self, __ & other)
+        return type(self)(__ & other)
     def __rand__(self, other):
-        return type(self)(self, other & __)
+        return type(self)(other & __)
     def __xor__(self, other):
-        return type(self)(self, __ ^ other)
+        return type(self)(__ ^ other)
     def __rxor__(self, other):
-        return type(self)(self, other ^ __)
+        return type(self)(other ^ __)
     def __or__(self, other):
-        return type(self)(self, __ | other)
+        return type(self)(__ | other)
     def __ror__(self, other):
-        return type(self)(self, other | __)
+        return type(self)(other | __)
 
     def __lt__(self, other):
-        return type(self)(self, __ < other)
+        return type(self)(__ < other)
     def __le__(self, other):
-        return type(self)(self, __ <= other)
+        return type(self)(__ <= other)
     def __eq__(self, other):
-        return type(self)(self, __ == other)
+        return type(self)(__ == other)
     def __ne__(self, other):
-        return type(self)(self, __ != other)
+        return type(self)(__ != other)
     def __gt__(self, other):
-        return type(self)(self, __ > other)
+        return type(self)(__ > other)
     def __ge__(self, other):
-        return type(self)(self, __ >= other)
+        return type(self)(__ >= other)
 
-___ = composer()
+___ = object.__new__(F)
+composer = F  # deprecated
