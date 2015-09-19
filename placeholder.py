@@ -1,5 +1,4 @@
 import operator
-import itertools
 from functools import partial
 
 __version__ = '0.5'

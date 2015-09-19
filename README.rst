@@ -1,5 +1,10 @@
 About Placeholder
 ==================
+.. image:: https://img.shields.io/pypi/v/placeholder.svg
+   :target: https://pypi.python.org/pypi/placeholder/
+.. image:: https://img.shields.io/pypi/pyversions/placeholder.svg
+.. image:: https://img.shields.io/pypi/status/placeholder.svg
+
 Operator overloading for fast anonymous functions.
 
 A ``placeholder`` object uses operator overloading to create partially bound functions on-the-fly.
