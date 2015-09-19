@@ -4,6 +4,8 @@ About Placeholder
    :target: https://pypi.python.org/pypi/placeholder/
 .. image:: https://img.shields.io/pypi/pyversions/placeholder.svg
 .. image:: https://img.shields.io/pypi/status/placeholder.svg
+.. image:: https://img.shields.io/travis/coady/placeholder.svg
+.. image:: https://img.shields.io/coveralls/coady/placeholder.svg
 
 Operator overloading for fast anonymous functions.
 
