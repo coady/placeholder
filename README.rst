@@ -5,7 +5,9 @@ About Placeholder
 .. image:: https://img.shields.io/pypi/pyversions/placeholder.svg
 .. image:: https://img.shields.io/pypi/status/placeholder.svg
 .. image:: https://img.shields.io/travis/coady/placeholder.svg
-.. image:: https://img.shields.io/coveralls/coady/placeholder.svg
+   :target: https://travis-ci.org/coady/placeholder
+.. image:: https://img.shields.io/codecov/c/github/coady/placeholder.svg
+   :target: https://codecov.io/github/coady/placeholder
 
 Operator overloading for fast anonymous functions.
 

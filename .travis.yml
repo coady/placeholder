@@ -4,13 +4,13 @@ python:
   - "2.7"
   - "3.3"
   - "3.4"
+  - "3.5"
 
 install:
-  - pip install pytest-cov python-coveralls codecov
+  - pip install pytest-cov codecov
 
 script:
-  - py.test --cov
+  - py.test -v --cov
 
 after_success:
-  - coveralls
-  - codecov
+  - codecov --min-coverage=100
