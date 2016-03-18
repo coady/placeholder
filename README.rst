@@ -57,7 +57,7 @@ Standard installation from pypi or local download. ::
 
 Dependencies
 ==================
-Python 2.7 or 3.2+.
+Python 2.7 or 3.3+.
 
 Tests
 ==================
