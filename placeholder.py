@@ -114,7 +114,7 @@ class F(partial):
                 callables.append(func)
             elif func.func is pipe:
                 callables += func.args[0]
-            elif func is not ___:
+            elif func is not _:
                 callables.append(func.func)
         args = callables if len(callables) == 1 else (pipe, tuple(callables))
         return partial.__new__(cls, *args)
@@ -165,5 +165,4 @@ class F(partial):
     __ge__ = method(operator.ge)
 
 
-___ = F(object)
-composer = F  # deprecated
+_ = ___ = F(object)  # ___ deprecated
