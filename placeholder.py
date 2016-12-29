@@ -4,6 +4,15 @@ from functools import partial
 __version__ = '0.5'
 
 
+def rmethod(name, op=None):
+    op = getattr(operator, name, op)
+    return lambda self, other: getattr(other, '__{}__'.format(name), partial(op, other))
+
+
+def umethod(name):
+    return lambda self: getattr(operator, name)
+
+
 class placeholder(object):
     """Singleton for creating partially bound functions."""
     __slots__ = ()
@@ -16,83 +25,61 @@ class placeholder(object):
     def __contains__(self, item):
         raise TypeError("argument of type 'placeholder' is not iterable")
 
-    def __neg__(self):
-        return operator.neg
-    def __pos__(self):
-        return operator.pos
-    def __invert__(self):
-        return operator.invert
+    __neg__ = umethod('neg')
+    __pos__ = umethod('pos')
+    __invert__ = umethod('invert')
 
     def __add__(self, other):
         return getattr(other, '__radd__', lambda left: left + other)
-    def __radd__(self, other):
-        return getattr(other, '__add__', partial(operator.add, other))
+    __radd__ = rmethod('add')
     def __sub__(self, other):
         return getattr(other, '__rsub__', lambda left: left - other)
-    def __rsub__(self, other):
-        return getattr(other, '__sub__', partial(operator.sub, other))
+    __rsub__ = rmethod('sub')
 
     def __mul__(self, other):
         return getattr(other, '__rmul__', lambda left: left * other)
-    def __rmul__(self, other):
-        return getattr(other, '__mul__', partial(operator.mul, other))
+    __rmul__ = rmethod('mul')
     def __floordiv__(self, other):
         return getattr(other, '__rfloordiv__', lambda left: left // other)
-    def __rfloordiv__(self, other):
-        return getattr(other, '__floordiv__', partial(operator.floordiv, other))
+    __rfloordiv__ = rmethod('floordiv')
     def __truediv__(self, other):
         return getattr(other, '__rtruediv__', lambda left: left / other)
-    def __rtruediv__(self, other):
-        return getattr(other, '__truediv__', partial(operator.truediv, other))
+    __rtruediv__ = rmethod('truediv')
     __div__, __rdiv__ = __truediv__, __rtruediv__
 
     def __mod__(self, other):
         return getattr(other, '__rmod__', lambda left: left % other)
-    def __rmod__(self, other):
-        return getattr(other, '__mod__', partial(operator.mod, other))
+    __rmod__ = rmethod('mod')
     def __divmod__(self, other):
         return getattr(other, '__rdivmod__', lambda left: divmod(left, other))
-    def __rdivmod__(self, other):
-        return getattr(other, '__divmod__', partial(divmod, other))
+    __rdivmod__ = rmethod('divmod', divmod)
     def __pow__(self, other):
         return getattr(other, '__rpow__', lambda left: left ** other)
-    def __rpow__(self, other):
-        return getattr(other, '__pow__', partial(operator.pow, other))
+    __rpow__ = rmethod('pow')
 
     def __lshift__(self, other):
         return getattr(other, '__rlshift__', lambda left: left << other)
-    def __rlshift__(self, other):
-        return getattr(other, '__lshift__', partial(operator.lshift, other))
+    __rlshift__ = rmethod('lshift')
     def __rshift__(self, other):
         return getattr(other, '__rrshift__', lambda left: left >> other)
-    def __rrshift__(self, other):
-        return getattr(other, '__rshift__', partial(operator.rshift, other))
+    __rrshift__ = rmethod('rshift')
 
     def __and__(self, other):
         return getattr(other, '__rand__', lambda left: left & other)
-    def __rand__(self, other):
-        return getattr(other, '__and__', partial(operator.and_, other))
+    __rand__ = rmethod('and', operator.and_)
     def __xor__(self, other):
         return getattr(other, '__rxor__', lambda left: left ^ other)
-    def __rxor__(self, other):
-        return getattr(other, '__xor__', partial(operator.xor, other))
+    __rxor__ = rmethod('xor')
     def __or__(self, other):
         return getattr(other, '__ror__', lambda left: left | other)
-    def __ror__(self, other):
-        return getattr(other, '__or__', partial(operator.or_, other))
+    __ror__ = rmethod('or', operator.or_)
 
-    def __lt__(self, other):
-        return getattr(other, '__gt__', partial(operator.gt, other))
-    def __le__(self, other):
-        return getattr(other, '__ge__', partial(operator.ge, other))
-    def __eq__(self, other):
-        return getattr(other, '__eq__', partial(operator.eq, other))
-    def __ne__(self, other):
-        return getattr(other, '__ne__', partial(operator.ne, other))
-    def __gt__(self, other):
-        return getattr(other, '__lt__', partial(operator.lt, other))
-    def __ge__(self, other):
-        return getattr(other, '__le__', partial(operator.le, other))
+    __lt__ = rmethod('gt')
+    __le__ = rmethod('ge')
+    __eq__ = rmethod('eq')
+    __ne__ = rmethod('ne')
+    __gt__ = rmethod('lt')
+    __ge__ = rmethod('le')
 
 
 __ = placeholder()
