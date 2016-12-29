@@ -10,7 +10,7 @@ def test_object():
 
 
 def test_getters():
-    assert (___.__class__)(None) is None.__class__
+    assert (___.append)(list) is list.append
     with pytest.raises(AttributeError):
         ___.name(None)
     assert (___[0])({0: None}) is (___[0])([None]) is None
@@ -54,8 +54,9 @@ def test_comparisons():
 
 
 def test_composition():
-    F(len).__call__ is len
-    assert (F(len) + 1)('') == 1
+    f = F(len) + 1
+    assert f('') == 1
+    assert (f * 2)('') == 2
 
 
 def test_errors():

@@ -16,7 +16,7 @@ def umethod(name):
 class placeholder(object):
     """Singleton for creating partially bound functions."""
     __slots__ = ()
-    __getattribute__ = operator.attrgetter
+    __getattr__ = operator.attrgetter
     __getitem__ = operator.itemgetter
     __call__ = operator.methodcaller
 
@@ -85,96 +85,85 @@ class placeholder(object):
 __ = placeholder()
 
 
-class F(object):
+def pipe(funcs, value):
+    for func in funcs:
+        value = func(value)
+    return value
+
+
+def method(func):
+    return lambda self, other: F(self, func(__, other))
+
+
+def rmethod(func):
+    return lambda self, other: F(self, func(other, __))
+
+
+def umethod(func):
+    return lambda self: F(self, func(__))
+
+
+class F(partial):
     """Singleton for creating composite functions."""
     __slots__ = ()
-    def __new__(cls, func):
-        method = staticmethod(func if cls is F else lambda arg: func(cls.__call__(arg)))
-        return object.__new__(type('F', (F,), {'__slots__': (), '__call__': method}))
 
-    def __neg__(self):
-        return type(self)(-__)
-    def __pos__(self):
-        return type(self)(+__)
-    def __invert__(self):
-        return type(self)(~__)
+    def __new__(cls, *funcs):
+        callables = []
+        for func in funcs:
+            if not isinstance(func, cls):
+                callables.append(func)
+            elif func.func is pipe:
+                callables += func.args[0]
+            elif func is not ___:
+                callables.append(func.func)
+        args = callables if len(callables) == 1 else (pipe, tuple(callables))
+        return partial.__new__(cls, *args)
 
-    def __getattribute__(self, name):
-        return type(self)(getattr(__, name))
-    def __getitem__(self, keys):
-        return type(self)(__[keys])
+    __neg__ = umethod(operator.neg)
+    __pos__ = umethod(operator.pos)
+    __invert__ = umethod(operator.invert)
 
-    def __add__(self, other):
-        return type(self)(__ + other)
-    def __radd__(self, other):
-        return type(self)(other + __)
-    def __sub__(self, other):
-        return type(self)(__ - other)
-    def __rsub__(self, other):
-        return type(self)(other - __)
+    __getattr__ = method(getattr)
+    __getitem__ = method(operator.getitem)
 
-    def __mul__(self, other):
-        return type(self)(__ * other)
-    def __rmul__(self, other):
-        return type(self)(other * __)
-    def __floordiv__(self, other):
-        return type(self)(__ // other)
-    def __rfloordiv__(self, other):
-        return type(self)(other // __)
-    def __truediv__(self, other):
-        return type(self)(__ / other)
-    def __rtruediv__(self, other):
-        return type(self)(other / __)
-    __div__, __rdiv__ = __truediv__, __rtruediv__
+    __add__ = method(operator.add)
+    __radd__ = rmethod(operator.add)
+    __sub__ = method(operator.sub)
+    __rsub__ = rmethod(operator.sub)
 
-    def __mod__(self, other):
-        return type(self)(__ % other)
-    def __rmod__(self, other):
-        return type(self)(other % __)
-    def __divmod__(self, other):
-        return type(self)(divmod(__, other))
-    def __rdivmod__(self, other):
-        return type(self)(divmod(other, __))
-    def __pow__(self, other):
-        return type(self)(__ ** other)
-    def __rpow__(self, other):
-        return type(self)(other ** __)
+    __mul__ = method(operator.mul)
+    __rmul__ = rmethod(operator.mul)
+    __floordiv__ = method(operator.floordiv)
+    __rfloordiv__ = rmethod(operator.floordiv)
+    __div__ = __truediv__ = method(operator.truediv)
+    __rdiv__ = __rtruediv__ = rmethod(operator.truediv)
 
-    def __lshift__(self, other):
-        return type(self)(__ << other)
-    def __rlshift__(self, other):
-        return type(self)(other << __)
-    def __rshift__(self, other):
-        return type(self)(__ >> other)
-    def __rrshift__(self, other):
-        return type(self)(other >> __)
+    __mod__ = method(operator.mod)
+    __rmod__ = rmethod(operator.mod)
+    __divmod__ = method(divmod)
+    __rdivmod__ = rmethod(divmod)
+    __pow__ = method(operator.pow)
+    __rpow__ = rmethod(operator.pow)
 
-    def __and__(self, other):
-        return type(self)(__ & other)
-    def __rand__(self, other):
-        return type(self)(other & __)
-    def __xor__(self, other):
-        return type(self)(__ ^ other)
-    def __rxor__(self, other):
-        return type(self)(other ^ __)
-    def __or__(self, other):
-        return type(self)(__ | other)
-    def __ror__(self, other):
-        return type(self)(other | __)
+    __lshift__ = method(operator.lshift)
+    __rlshift__ = rmethod(operator.lshift)
+    __rshift__ = method(operator.rshift)
+    __rrshift__ = rmethod(operator.rshift)
 
-    def __lt__(self, other):
-        return type(self)(__ < other)
-    def __le__(self, other):
-        return type(self)(__ <= other)
-    def __eq__(self, other):
-        return type(self)(__ == other)
-    def __ne__(self, other):
-        return type(self)(__ != other)
-    def __gt__(self, other):
-        return type(self)(__ > other)
-    def __ge__(self, other):
-        return type(self)(__ >= other)
+    __and__ = method(operator.and_)
+    __rand__ = rmethod(operator.and_)
+    __xor__ = method(operator.xor)
+    __rxor__ = rmethod(operator.xor)
+    __or__ = method(operator.or_)
+    __ror__ = rmethod(operator.or_)
+
+    __lt__ = method(operator.lt)
+    __le__ = method(operator.le)
+    __eq__ = method(operator.eq)
+    __ne__ = method(operator.ne)
+    __gt__ = method(operator.gt)
+    __ge__ = method(operator.ge)
 
 
-___ = object.__new__(F)
+___ = F(object)
 composer = F  # deprecated
