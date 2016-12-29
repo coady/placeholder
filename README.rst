@@ -1,5 +1,3 @@
-About Placeholder
-==================
 .. image:: https://img.shields.io/pypi/v/placeholder.svg
    :target: https://pypi.python.org/pypi/placeholder/
 .. image:: https://img.shields.io/pypi/pyversions/placeholder.svg
@@ -8,8 +6,6 @@ About Placeholder
    :target: https://travis-ci.org/coady/placeholder
 .. image:: https://img.shields.io/codecov/c/github/coady/placeholder.svg
    :target: https://codecov.io/github/coady/placeholder
-
-Operator overloading for fast anonymous functions.
 
 A ``placeholder`` object uses operator overloading to create partially bound functions on-the-fly.
 When used in a binary expression, it will return a callable object with the other argument bound.
@@ -50,10 +46,9 @@ See tests for more example usage.
 
 Installation
 ==================
-Standard installation from pypi or local download. ::
+::
 
    $ pip install placeholder
-   $ python setup.py install
 
 Dependencies
 ==================
@@ -63,7 +58,7 @@ Tests
 ==================
 100% branch coverage. ::
 
-   $ py.test [--cov]
+   $ pytest [--cov]
 
 Changes
 ==================

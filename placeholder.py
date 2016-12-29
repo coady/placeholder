@@ -5,7 +5,7 @@ __version__ = '0.5'
 
 
 class placeholder(object):
-    "Create partially bound function."
+    """Singleton for creating partially bound functions."""
     __slots__ = ()
     __getattribute__ = operator.attrgetter
     __getitem__ = operator.itemgetter
@@ -94,11 +94,12 @@ class placeholder(object):
     def __ge__(self, other):
         return getattr(other, '__le__', partial(operator.le, other))
 
+
 __ = placeholder()
 
 
 class F(object):
-    "Create composite function."
+    """Singleton for creating composite functions."""
     __slots__ = ()
     def __new__(cls, func):
         method = staticmethod(func if cls is F else lambda arg: func(cls.__call__(arg)))
@@ -186,6 +187,7 @@ class F(object):
         return type(self)(__ > other)
     def __ge__(self, other):
         return type(self)(__ >= other)
+
 
 ___ = object.__new__(F)
 composer = F  # deprecated
