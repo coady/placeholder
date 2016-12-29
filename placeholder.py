@@ -56,6 +56,9 @@ class placeholder(object):
     def __pow__(self, other):
         return getattr(other, '__rpow__', lambda left: left ** other)
     __rpow__ = rmethod('pow')
+    def __matmul__(self, other):
+        return getattr(other, '__rmatmul__', lambda left: operator.matmul(left, other))
+    __rmatmul__ = rmethod('matmul')
 
     def __lshift__(self, other):
         return getattr(other, '__rlshift__', lambda left: left << other)
@@ -144,6 +147,9 @@ class F(partial):
     __rdivmod__ = rmethod(divmod)
     __pow__ = method(operator.pow)
     __rpow__ = rmethod(operator.pow)
+    if hasattr(operator, 'matmul'):
+        __matmul__ = method(operator.matmul)
+        __rmatmul__ = rmethod(operator.matmul)
 
     __lshift__ = method(operator.lshift)
     __rlshift__ = rmethod(operator.lshift)

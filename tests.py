@@ -1,3 +1,4 @@
+import sys
 import pytest
 from placeholder import placeholder, F, __, _
 
@@ -74,3 +75,11 @@ def test_unary():
     assert (-_)(1) == -1
     assert (+_)(-1) == -1
     assert (~_)(0) == -1
+
+
+@pytest.mark.skipif(sys.version_info < (3, 5), reason="requires Python 3.5+")
+def test_matmul():
+    for func in map(eval, ('_ @ None', 'None @ _')):
+        assert isinstance(func, F)
+        with pytest.raises(TypeError):
+            func(0)
