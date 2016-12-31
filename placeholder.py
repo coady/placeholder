@@ -1,3 +1,4 @@
+import itertools
 import operator
 from functools import partial
 
@@ -22,8 +23,6 @@ class placeholder(object):
 
     def __iter__(self):
         raise TypeError("'placeholder' object is not iterable")
-    def __contains__(self, item):
-        raise TypeError("argument of type 'placeholder' is not iterable")
 
     __neg__ = umethod('neg')
     __pos__ = umethod('pos')
@@ -111,16 +110,12 @@ class F(partial):
     __slots__ = ()
 
     def __new__(cls, *funcs):
-        callables = []
-        for func in funcs:
-            if not isinstance(func, cls):
-                callables.append(func)
-            elif func.func is pipe:
-                callables += func.args[0]
-            elif func is not _:
-                callables.append(func.func)
-        args = callables if len(callables) == 1 else (pipe, tuple(callables))
-        return partial.__new__(cls, *args)
+        funcs = tuple(itertools.chain.from_iterable(
+            func if isinstance(func, cls) else [func] for func in funcs))
+        return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))
+
+    def __iter__(self):
+        return itertools.chain({self.func} - {pipe}, *self.args)
 
     __neg__ = umethod(operator.neg)
     __pos__ = umethod(operator.pos)
@@ -171,4 +166,5 @@ class F(partial):
     __ge__ = method(operator.ge)
 
 
-_ = ___ = F(object)  # ___ deprecated
+_ = F(pipe)
+___ = _  # deprecated
