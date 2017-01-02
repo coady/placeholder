@@ -77,7 +77,7 @@ Tests
 
 Changes
 ==================
-dev
+0.6
 
 * Optimized composite functions
 * Renamed to ``_`` (single underscore) for consistency

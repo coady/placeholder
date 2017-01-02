@@ -2,7 +2,7 @@ import itertools
 import operator
 from functools import partial
 
-__version__ = '0.5'
+__version__ = '0.6'
 
 
 def rmethod(name, op=None):
