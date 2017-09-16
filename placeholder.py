@@ -90,7 +90,7 @@ class F(partial):
         return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))
 
     def __iter__(self):
-        return itertools.chain({self.func} - {pipe}, *self.args)
+        return iter(self.args[0] if self.args else [self.func])
 
     __neg__ = unary(-__)
     __pos__ = unary(+__)

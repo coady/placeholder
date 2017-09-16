@@ -8,6 +8,7 @@ def test_object():
     assert placeholder()
     with pytest.raises(TypeError):
         placeholder(None)
+    assert F({}.get) > 1
 
 
 def test_getters():
