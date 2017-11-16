@@ -11,7 +11,8 @@ setup(
     url='https://bitbucket.org/coady/placeholder',
     license='Apache Software License',
     py_modules=['placeholder'],
-    tests_require=['pytest-cov'],
+    python_requires='~=2.7, >=3.4',
+    tests_require=['pytest-cov', 'pytest-parametrized'],
     keywords='functional lambda scala underscore',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

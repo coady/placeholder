@@ -1,4 +1,3 @@
-import sys
 import pytest
 from placeholder import placeholder, F, __, _
 
@@ -9,6 +8,10 @@ def test_object():
     with pytest.raises(TypeError):
         placeholder(None)
     assert F({}.get) > 1
+    with pytest.raises(TypeError):
+        list(__)
+    with pytest.raises(TypeError):
+        None in __
 
 
 def test_getters():
@@ -48,11 +51,11 @@ def test_binary():
     assert (_ ^ 3)(5) == (5 ^ _)(3) == 6
 
 
-def test_comparisons():
-    for x, y in [(1, 2), (1.0, 2.0)]:
-        assert (_ < y)(x) and (_ > x)(y)
-        assert (_ <= y)(x) and (_ >= x)(y)
-        assert (_ == x)(x) and (_ != x)(y)
+@pytest.parametrized.zip
+def test_comparisons(x=(1, 1.0), y=(2, 2.0)):
+    assert (_ < y)(x) and (_ > x)(y)
+    assert (_ <= y)(x) and (_ >= x)(y)
+    assert (_ == x)(x) and (_ != x)(y)
 
 
 def test_composition():
@@ -61,15 +64,11 @@ def test_composition():
     assert (f * 2)('') == 2
 
 
-def test_errors():
-    for obj in (__ + None, __ - None, __ * None, __ // None, __ / None, __ % None, divmod(__, None),
-                __ ** None, __ << None, __ >> None, __ & None, __ ^ None, __ | None):
-        with pytest.raises(TypeError):
-            obj(0)
+@pytest.parametrized
+def test_errors(op='+ - * // / % ** << >> & ^ |'.split()):
+    func = eval('__ {} None'.format(op))
     with pytest.raises(TypeError):
-        list(__)
-    with pytest.raises(TypeError):
-        None in __
+        func(0)
 
 
 def test_unary():
@@ -78,9 +77,10 @@ def test_unary():
     assert (~_)(0) == -1
 
 
-@pytest.mark.skipif(sys.version_info < (3, 5), reason="requires Python 3.5+")
-def test_matmul():
-    for func in map(eval, ('_ @ None', 'None @ _')):
-        assert isinstance(func, F)
-        with pytest.raises(TypeError):
-            func(0)
+@pytest.mark.skipif(not hasattr(F, '__matmul__'), reason="requires Python 3.5+")
+@pytest.parametrized
+def test_matmul(expr=('_ @ None', 'None @ _')):
+    func = eval(expr)
+    assert isinstance(func, F)
+    with pytest.raises(TypeError):
+        func(0)
