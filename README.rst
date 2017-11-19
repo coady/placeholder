@@ -17,8 +17,8 @@ Usage
 
    from placeholder import _     # single underscore
 
-   _.age < 18     # lambda person: person.age < 18
-   _[key] ** 2    # lambda data: data[key] ** 2
+   _.age < 18     # lambda obj: obj.age < 18
+   _[key] ** 2    # lambda obj: obj[key] ** 2
 
 ``_`` is a singleton of an ``F`` class, and ``F`` expressions can also be used with functions.
 
@@ -36,28 +36,22 @@ Performance
 Every effort is made to optimize the placeholder instance.
 It's 20-40x faster than similar libraries on PyPI.
 
-However, there is overhead (in CPython) in making an object callable.
-Therefore a lower-level ``placeholder`` ``__`` is also exposed;
-it returns builtins which can't be composed any further.
+However, there is slight overhead (in CPython) in making an object callable.
+Placeholders with single operators can access the ``func`` attribute directly for optimal performance.
 
 .. code-block:: python
 
-   from placeholder import __    # double underscore
+   _.age.func         # operator.attrgetter('age')
+   _[key].func        # operator.itemgetter(key)
 
-   __.age         # operator.attrgetter('age')
-   __[key]        # operator.itemgetter(key)
-   __ + 1         # (1).__radd__
-
-``__`` should generally be faster than even inlined code.
-Whereas ``_`` will likely be slightly slower than inlined code, but faster than a ``lambda``.
-Below are some example benchmarks comparing ``map`` to an inlined generator expression.
+However, placeholder performance should generally be comparable to inlined expressions, and faster than lambda.
+Below are some example benchmarks.
 
 .. code-block:: python
 
-   any(map(__ > 0, data))           # 3.92 ms
-   any(x > 0 for x in data)         # 5.6 ms
-   any(map(_ > 0, data))            # 6.81 ms
-   any(map(lambda x: x > 0, data))  # 9.17 ms
+   min(data, key=operator.itemgetter(-1))    # 22.7 ms
+   min(data, key=_[-1])                      # 25.9 ms
+   min(data, key=lambda x: x[-1])            # 27.2 ms
 
 Installation
 ==================
@@ -67,7 +61,7 @@ Installation
 
 Dependencies
 ==================
-* Python 2.7, 3.4+
+* Python ~=2.7, >=3.4
 
 Tests
 ==================
@@ -77,6 +71,10 @@ Tests
 
 Changes
 ==================
+dev
+
+* Deprecated ``__`` (double underscore)
+
 0.6
 
 * Optimized composite functions

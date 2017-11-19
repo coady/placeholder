@@ -1,17 +1,11 @@
 import pytest
-from placeholder import placeholder, F, __, _
+from placeholder import F, __, _
 
 
 def test_object():
-    assert type(_) is F and type(__) is placeholder
-    assert placeholder()
-    with pytest.raises(TypeError):
-        placeholder(None)
+    assert type(_) is F
     assert F({}.get) > 1
-    with pytest.raises(TypeError):
-        list(__)
-    with pytest.raises(TypeError):
-        None in __
+    assert list(__) == []
 
 
 def test_getters():
@@ -24,7 +18,6 @@ def test_getters():
     with pytest.raises(IndexError):
         _[0]([])
     assert sorted(enumerate('cba'), key=_[1]) == [(2, 'a'), (1, 'b'), (0, 'c')]
-    assert __('split', '.')('x.y') == ['x', 'y']
 
 
 def test_math():
