@@ -3,7 +3,7 @@ import operator
 import warnings
 from functools import partial
 
-__version__ = '0.6'
+__version__ = '0.7'
 
 
 def rpartial(func, other):
@@ -82,8 +82,6 @@ class F(partial):
 
 
 class placeholder(F):
-    __slots__ = ()
-
     def __new__(cls, *funcs):
         warnings.warn("Use `F.func` if necessary", DeprecationWarning)
         return F.__new__(cls, *funcs).func

@@ -44,7 +44,7 @@ Placeholders with single operators can access the ``func`` attribute directly fo
    _.age.func         # operator.attrgetter('age')
    _[key].func        # operator.itemgetter(key)
 
-However, placeholder performance should generally be comparable to inlined expressions, and faster than lambda.
+Performance should generally be comparable to inlined expressions, and faster than lambda.
 Below are some example benchmarks.
 
 .. code-block:: python
@@ -71,7 +71,7 @@ Tests
 
 Changes
 ==================
-dev
+0.7
 
 * Deprecated ``__`` (double underscore)
 
