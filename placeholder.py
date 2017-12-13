@@ -3,7 +3,7 @@ import operator
 import warnings
 from functools import partial
 
-__version__ = '0.7'
+__version__ = '0.7.1'
 
 
 def rpartial(func, other):

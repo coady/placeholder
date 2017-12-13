@@ -1,5 +1,5 @@
 .. image:: https://img.shields.io/pypi/v/placeholder.svg
-   :target: https://pypi.python.org/pypi/placeholder/
+   :target: https://pypi.org/project/placeholder/
 .. image:: https://img.shields.io/pypi/pyversions/placeholder.svg
 .. image:: https://img.shields.io/pypi/status/placeholder.svg
 .. image:: https://img.shields.io/travis/coady/placeholder.svg
@@ -58,10 +58,6 @@ Installation
 ::
 
    $ pip install placeholder
-
-Dependencies
-==================
-* Python ~=2.7, >=3.4
 
 Tests
 ==================
