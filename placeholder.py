@@ -1,6 +1,5 @@
 import itertools
 import operator
-import warnings
 from functools import partial
 
 __version__ = '0.7.1'
@@ -81,11 +80,4 @@ class F(partial):
     __ge__ = methods(operator.le)[1]
 
 
-class placeholder(F):
-    def __new__(cls, *funcs):
-        warnings.warn("Use `F.func` if necessary", DeprecationWarning)
-        return F.__new__(cls, *funcs).func
-
-
 _ = F()
-__ = F.__new__(placeholder)

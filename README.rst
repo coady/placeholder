@@ -67,6 +67,10 @@ Tests
 
 Changes
 ==================
+dev
+
+* Removed ``__`` (double underscore)
+
 0.7
 
 * Deprecated ``__`` (double underscore)

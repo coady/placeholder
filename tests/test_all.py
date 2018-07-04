@@ -1,11 +1,10 @@
 import pytest
-from placeholder import F, __, _
+from placeholder import F, _
 
 
 def test_object():
     assert type(_) is F
     assert F({}.get) > 1
-    assert list(__) == []
 
 
 def test_getters():
@@ -59,7 +58,7 @@ def test_composition():
 
 @pytest.parametrized
 def test_errors(op='+ - * // / % ** << >> & ^ |'.split()):
-    func = eval('__ {} None'.format(op))
+    func = eval('_ {} None'.format(op))
     with pytest.raises(TypeError):
         func(0)
 
