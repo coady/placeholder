@@ -54,6 +54,8 @@ def test_composition():
     f = F(len) + 1
     assert f('') == 1
     assert (f * 2)('') == 2
+    mean = (_ + _) / 2.0
+    assert mean(0, 1) == 0.5
 
 
 @pytest.parametrized

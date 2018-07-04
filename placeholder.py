@@ -9,8 +9,9 @@ def rpartial(func, other):
     return lambda self: func(self, other)
 
 
-def pipe(funcs, value):
-    for func in funcs:
+def pipe(funcs, *args, **kwargs):
+    value = funcs[0](*args, **kwargs)
+    for func in funcs[1:]:
         value = func(value)
     return value
 
@@ -19,6 +20,8 @@ def methods(func):
     name = func.__name__.rstrip('_')
 
     def left(self, other):
+        if isinstance(other, F):
+            return type(self)(self, func)
         return type(self)(self, getattr(other, '__r{}__'.format(name), rpartial(func, other)))
 
     def right(self, other):

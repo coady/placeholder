@@ -70,6 +70,7 @@ Changes
 dev
 
 * Removed ``__`` (double underscore)
+* Variable arguments of first function
 
 0.7
 
