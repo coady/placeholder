@@ -1,9 +1,11 @@
+dist: xenial
 language: python
 
 python:
   - 2.7
   - 3.5
   - 3.6
+  - 3.7
 
 install:
   - pip install pytest-cov pytest-parametrized codecov
@@ -13,3 +15,13 @@ script:
 
 after_success:
   - codecov
+
+deploy:
+  provider: pypi
+  user: coady
+  password:
+    secure: DhBcNPhx/CMl496I6F91dcXpIt1Bt2sp3fK2OkzgobuJJ4IPtzrKbxp4B8X5QVK+Vozz+1hwbOiFwl1veKkwbRlUG9ca0zmuNMsObBmovDo8T50N1xRGpPLIw6nk31zDWPrb1n5I+5tI4ltT47hF33WKQCSH3szJWwBoyOCWICtCSLgbetZQdY3yOkcB/2OFU2meDkwlIKLktnN9FDCmYwVqnHCbtXcISCc3dnHzdHupNtcHRUHdlA8J8INs8e2pVnhW/TwJbeX2ZYVt75G/HC48wjpzhJwG2Xw/2qsTYQWA8y9JYis/yk0n290mvQGyryCiH+vRXEAUfn5JBeR36pIxVRTGasSfyoFi4N4itLMShUfyHiFQWBQQ0mcKQP8Hwy6S0RrIXepVLSIoBeqBw3vDOgg75tiqE98/ckjaJ8yDofwqjFK2COVbAodRWWZfYNVTqydaNqFyxNlL+y6ogO3QUYTvKPyscxEkPulX4eSN13ndOSq56YzTtu3x5mTzRSlOS+WweTOnqjXTUJsJ34eXMBfUY7UeY0yVN3zQm6l0T4ZkyDDnKXBXnl8qv+wxo5T3dCJB3D7WELoYrvVxHBymwyCzX3fBDXEXIQbl/aUIH6VDPKZq07qOvjTKpFkaY9agUQog9PvNZ6yTDTmhJJpHz0lL+T1X+nhNTi/0snI=
+  on:
+    tags: true
+  distributions: "sdist bdist_wheel"
+  skip_existing: true
