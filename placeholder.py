@@ -83,4 +83,20 @@ class F(partial):
     __ge__ = methods(operator.le)[1]
 
 
+class M(object):
+    """Singleton for creating method callers and multi-valued getters."""
+    def __getattr__(cls, name):
+        """Return a `methodcaller` constructor."""
+        return F(partial(operator.methodcaller, name), F)
+
+    def __call__(self, *names):
+        """Return a tupled `attrgetter`."""
+        return F(operator.attrgetter(*names))
+
+    def __getitem__(self, keys):
+        """Return a tupled `itemgetter`."""
+        return F(operator.itemgetter(*keys))
+
+
 _ = F()
+m = M()

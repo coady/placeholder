@@ -64,6 +64,7 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 dev
 * Removed `__` (double underscore)
 * Variable arguments of first function
+* Method callers and multi-valued getters
 
 0.7
 * Deprecated `__` (double underscore)

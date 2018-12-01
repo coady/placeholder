@@ -1,5 +1,5 @@
 import pytest
-from placeholder import F, _
+from placeholder import F, _, m
 
 
 def test_object():
@@ -17,6 +17,9 @@ def test_getters():
     with pytest.raises(IndexError):
         _[0]([])
     assert sorted(enumerate('cba'), key=_[1]) == [(2, 'a'), (1, 'b'), (0, 'c')]
+    assert m.split('-')('a-b') == ['a', 'b']
+    assert m('real', 'imag')(1) == (1, 0)
+    assert m[0, -1]('abc') == ('a', 'c')
 
 
 def test_math():
