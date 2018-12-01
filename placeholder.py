@@ -1,6 +1,6 @@
 import itertools
 import operator
-from functools import partial
+from functools import partial, update_wrapper
 
 __version__ = '0.7.1'
 
@@ -26,15 +26,18 @@ def methods(func):
 
     def right(self, other):
         return type(self)(self, getattr(other, '__{}__'.format(name), partial(func, other)))
-    return left, right
+    return update_wrapper(left, func), update_wrapper(right, func)
 
 
 def binary(func):
-    return lambda self, arg: type(self)(self, func(arg))
+    def getter(self, arg):
+        return type(self)(self, func(arg))
+    getter.__doc__ = func.__doc__
+    return getter
 
 
 def unary(func):
-    return lambda self: type(self)(self, func)
+    return update_wrapper(lambda self: type(self)(self, func), func)
 
 
 class F(partial):

@@ -3,6 +3,7 @@
 ![image](https://img.shields.io/pypi/status/placeholder.svg)
 [![image](https://img.shields.io/travis/coady/placeholder.svg)](https://travis-ci.org/coady/placeholder)
 [![image](https://img.shields.io/codecov/c/github/coady/placeholder.svg)](https://codecov.io/github/coady/placeholder)
+[![image](https://readthedocs.org/projects/placeholder/badge)](https://placeholder.readthedocs.io)
 [![image](https://requires.io/github/coady/placeholder/requirements.svg)](https://requires.io/github/coady/placeholder/requirements/)
 [![image](https://api.codeclimate.com/v1/badges/3d859b1e30ffac79f10e/maintainability)](https://codeclimate.com/github/coady/placeholder/maintainability)
 
