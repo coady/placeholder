@@ -1,5 +1,5 @@
 [![image](https://img.shields.io/pypi/v/placeholder.svg)](https://pypi.org/project/placeholder/)
-![image](https://img.shields.io/pypi/pyversions/placeholder.svg)
+[![image](https://img.shields.io/pypi/pyversions/placeholder.svg)](https://python3statement.org)
 ![image](https://img.shields.io/pypi/status/placeholder.svg)
 [![image](https://img.shields.io/travis/coady/placeholder.svg)](https://travis-ci.org/coady/placeholder)
 [![image](https://img.shields.io/codecov/c/github/coady/placeholder.svg)](https://codecov.io/github/coady/placeholder)
@@ -19,8 +19,9 @@ _.age < 18     # lambda obj: obj.age < 18
 _[key] ** 2    # lambda obj: obj[key] ** 2
 ```
 
-`_` is a singleton of an `F` class, and `F` expressions can also be used
-with functions.
+Note interactive shells use `_` as the previous output, so assign to a different name as needed.
+
+`_` is a singleton of an `F` class, and `F` expressions can also be used with functions.
 
 ```python
 from placeholder import F
@@ -29,7 +30,6 @@ from placeholder import F
 ```
 
 All applicable double underscore methods are supported.
-See tests for more example usage.
 
 # Performance
 Every effort is made to optimize the placeholder instance.
