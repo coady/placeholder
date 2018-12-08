@@ -62,7 +62,7 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
     $ pytest [--cov]
 
 # Changes
-dev
+1.0
 * Removed `__` (double underscore)
 * Variable arguments of first function
 * Method callers and multi-valued getters

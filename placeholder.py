@@ -2,7 +2,7 @@ import itertools
 import operator
 from functools import partial, update_wrapper
 
-__version__ = '0.7.1'
+__version__ = '1.0'
 
 
 def rpartial(func, other):
