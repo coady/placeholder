@@ -11,12 +11,12 @@ setup(
     author_email='aric.coady@gmail.com',
     url='https://github.com/coady/placeholder',
     project_urls={
-        'Documentation': 'https://multimethod.readthedocs.io',
+        'Documentation': 'https://placeholder.readthedocs.io',
     },
     license='Apache Software License',
     py_modules=['placeholder'],
     extras_require={
-        'docs': ['m2r'],
+        'docs': ['m2r', 'nbsphinx', 'jupyter'],
     },
     python_requires='>=2.7',
     tests_require=['pytest-cov', 'pytest-parametrized'],

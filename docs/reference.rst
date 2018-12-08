@@ -12,7 +12,6 @@ F
 M
 ^^^^^^^^^^^^^
 .. autoclass:: M
-   :show-inheritance:
    :members:
    :special-members:
    :exclude-members: __weakref__
