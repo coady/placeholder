@@ -21,7 +21,7 @@ import placeholder
 # -- Project information -----------------------------------------------------
 
 project = 'placeholder'
-copyright = '2018, Aric Coady'
+copyright = '2019, Aric Coady'
 author = 'Aric Coady'
 
 # The short X.Y version

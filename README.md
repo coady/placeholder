@@ -1,5 +1,6 @@
 [![image](https://img.shields.io/pypi/v/placeholder.svg)](https://pypi.org/project/placeholder/)
 [![image](https://img.shields.io/pypi/pyversions/placeholder.svg)](https://python3statement.org)
+[![image](https://pepy.tech/badge/placeholder)](https://pepy.tech/project/placeholder)
 ![image](https://img.shields.io/pypi/status/placeholder.svg)
 [![image](https://img.shields.io/travis/coady/placeholder.svg)](https://travis-ci.org/coady/placeholder)
 [![image](https://img.shields.io/codecov/c/github/coady/placeholder.svg)](https://codecov.io/github/coady/placeholder)

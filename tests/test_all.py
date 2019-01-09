@@ -1,4 +1,5 @@
 import pytest
+from parametrized import parametrized
 from placeholder import F, _, m
 
 
@@ -46,7 +47,7 @@ def test_binary():
     assert (_ ^ 3)(5) == (5 ^ _)(3) == 6
 
 
-@pytest.parametrized.zip
+@parametrized.zip
 def test_comparisons(x=(1, 1.0), y=(2, 2.0)):
     assert (_ < y)(x) and (_ > x)(y)
     assert (_ <= y)(x) and (_ >= x)(y)
@@ -61,7 +62,7 @@ def test_composition():
     assert mean(0, 1) == 0.5
 
 
-@pytest.parametrized
+@parametrized
 def test_errors(op='+ - * // / % ** << >> & ^ |'.split()):
     func = eval('_ {} None'.format(op))
     with pytest.raises(TypeError):
@@ -75,7 +76,7 @@ def test_unary():
 
 
 @pytest.mark.skipif(not hasattr(F, '__matmul__'), reason="requires Python 3.5+")
-@pytest.parametrized
+@parametrized
 def test_matmul(expr=('_ @ None', 'None @ _')):
     func = eval(expr)
     assert isinstance(func, F)
