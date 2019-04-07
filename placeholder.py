@@ -1,4 +1,5 @@
 import itertools
+import math
 import operator
 from functools import partial, update_wrapper
 
@@ -42,8 +43,6 @@ def unary(func):
 
 class F(partial):
     """Singleton for creating composite functions."""
-    __slots__ = ()
-
     def __new__(cls, *funcs):
         funcs = tuple(itertools.chain.from_iterable(
             func if isinstance(func, cls) else [func] for func in funcs))
@@ -58,6 +57,14 @@ class F(partial):
     __neg__ = unary(operator.neg)
     __pos__ = unary(operator.pos)
     __invert__ = unary(operator.invert)
+
+    __abs__ = unary(abs)
+    __reversed__ = unary(reversed)
+    __round__ = unary(round)
+
+    __trunc__ = unary(math.trunc)
+    __floor__ = unary(math.floor)
+    __ceil__ = unary(math.ceil)
 
     __add__, __radd__ = methods(operator.add)
     __sub__, __rsub__ = methods(operator.sub)

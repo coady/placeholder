@@ -1,3 +1,4 @@
+import math
 import pytest
 from parametrized import parametrized
 from placeholder import F, _, m
@@ -73,6 +74,14 @@ def test_unary():
     assert (-_)(1) == -1
     assert (+_)(-1) == -1
     assert (~_)(0) == -1
+
+    assert abs(_)(-1) == 1
+    assert list(reversed(_)('abc')) == ['c', 'b', 'a']
+    assert round(_)(0.1) == 0
+
+    assert math.trunc(_)(-1.1) == -1
+    assert math.floor(_)(-1.1) == -2
+    assert math.ceil(_)(-1.1) == -1
 
 
 @pytest.mark.skipif(not hasattr(F, '__matmul__'), reason="requires Python 3.5+")
