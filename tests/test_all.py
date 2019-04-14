@@ -2,6 +2,7 @@ import math
 import pytest
 from parametrized import parametrized
 from placeholder import F, _, m
+py3 = hasattr(F, '__matmul__')
 
 
 def test_object():
@@ -77,14 +78,16 @@ def test_unary():
 
     assert abs(_)(-1) == 1
     assert list(reversed(_)('abc')) == ['c', 'b', 'a']
-    assert round(_)(0.1) == 0
-
     assert math.trunc(_)(-1.1) == -1
-    assert math.floor(_)(-1.1) == -2
-    assert math.ceil(_)(-1.1) == -1
+
+    if py3:
+        assert round(_)(0.1) == 0
+        assert round(_, 1)(0.11) == 0.1
+        assert math.floor(_)(-1.1) == -2
+        assert math.ceil(_)(-1.1) == -1
 
 
-@pytest.mark.skipif(not hasattr(F, '__matmul__'), reason="requires Python 3.5+")
+@pytest.mark.skipif(not py3, reason="requires Python 3")
 @parametrized
 def test_matmul(expr=('_ @ None', 'None @ _')):
     func = eval(expr)

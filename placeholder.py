@@ -30,13 +30,6 @@ def methods(func):
     return update_wrapper(left, func), update_wrapper(right, func)
 
 
-def binary(func):
-    def getter(self, arg):
-        return type(self)(self, func(arg))
-    getter.__doc__ = func.__doc__
-    return getter
-
-
 def unary(func):
     return update_wrapper(lambda self: type(self)(self, func), func)
 
@@ -51,8 +44,14 @@ class F(partial):
     def __iter__(self):
         return iter(self.args[0] if self.args else [self.func])
 
-    __getattr__ = binary(operator.attrgetter)
-    __getitem__ = binary(operator.itemgetter)
+    def __getattr__(self, attr):
+        return type(self)(self, operator.attrgetter(attr))
+
+    def __getitem__(self, item):
+        return type(self)(self, operator.itemgetter(item))
+
+    def __round__(self, ndigits=None):
+        return type(self)(self, round if ndigits is None else partial(round, ndigits=ndigits))
 
     __neg__ = unary(operator.neg)
     __pos__ = unary(operator.pos)
@@ -60,7 +59,6 @@ class F(partial):
 
     __abs__ = unary(abs)
     __reversed__ = unary(reversed)
-    __round__ = unary(round)
 
     __trunc__ = unary(math.trunc)
     __floor__ = unary(math.floor)
