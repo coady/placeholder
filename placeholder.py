@@ -27,6 +27,7 @@ def methods(func):
 
     def right(self, other):
         return type(self)(self, getattr(other, '__{}__'.format(name), partial(func, other)))
+
     return update_wrapper(left, func), update_wrapper(right, func)
 
 
@@ -36,9 +37,10 @@ def unary(func):
 
 class F(partial):
     """Singleton for creating composite functions."""
+
     def __new__(cls, *funcs):
-        funcs = tuple(itertools.chain.from_iterable(
-            func if isinstance(func, cls) else [func] for func in funcs))
+        funcs = (func if isinstance(func, cls) else [func] for func in funcs)
+        funcs = tuple(itertools.chain(*funcs))
         return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))
 
     def __iter__(self):
@@ -93,6 +95,7 @@ class F(partial):
 
 class M(object):
     """Singleton for creating method callers and multi-valued getters."""
+
     def __getattr__(cls, name):
         """Return a `methodcaller` constructor."""
         return F(partial(operator.methodcaller, name), F)

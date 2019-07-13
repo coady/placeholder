@@ -2,6 +2,7 @@ import math
 import pytest
 from parametrized import parametrized
 from placeholder import F, _, m
+
 py3 = hasattr(F, '__matmul__')
 
 
