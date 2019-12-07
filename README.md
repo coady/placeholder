@@ -21,7 +21,9 @@ _.age < 18     # lambda obj: obj.age < 18
 _[key] ** 2    # lambda obj: obj[key] ** 2
 ```
 
-Note interactive shells use `_` as the previous output, so assign to a different name as needed.
+Note `_` has special meaning in other contexts, such as the previous output in interactive shells.
+Assign to a different name as needed.
+Kotlin uses `it`, but in Python `it` is a common short name for an iterator.
 
 `_` is a singleton of an `F` class, and `F` expressions can also be used with functions.
 
@@ -64,6 +66,9 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
     $ pytest [--cov]
 
 # Changes
+1.1
+* Additional unary functions
+
 1.0
 * Removed `__` (double underscore)
 * Variable arguments of first function

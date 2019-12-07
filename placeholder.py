@@ -3,7 +3,7 @@ import math
 import operator
 from functools import partial, update_wrapper
 
-__version__ = '1.0'
+__version__ = '1.1'
 
 
 def rpartial(func, other):
