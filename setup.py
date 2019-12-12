@@ -14,7 +14,7 @@ setup(
     license='Apache Software License',
     py_modules=['placeholder'],
     extras_require={'docs': ['m2r', 'nbsphinx', 'jupyter']},
-    python_requires='>=2.7',
+    python_requires='>=3.5',
     tests_require=['pytest-cov', 'pytest-parametrized'],
     keywords='functional lambda scala underscore',
     classifiers=[
@@ -22,8 +22,6 @@ setup(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: Apache Software License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',

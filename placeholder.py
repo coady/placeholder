@@ -70,13 +70,12 @@ class F(partial):
     __sub__, __rsub__ = methods(operator.sub)
     __mul__, __rmul__ = methods(operator.mul)
     __floordiv__, __rfloordiv__ = methods(operator.floordiv)
-    __div__, __rdiv__ = __truediv__, __rtruediv__ = methods(operator.truediv)
+    __truediv__, __rtruediv__ = methods(operator.truediv)
 
     __mod__, __rmod__ = methods(operator.mod)
     __divmod__, __rdivmod__ = methods(divmod)
     __pow__, __rpow__ = methods(operator.pow)
-    if hasattr(operator, 'matmul'):
-        __matmul__, __rmatmul__ = methods(operator.matmul)
+    __matmul__, __rmatmul__ = methods(operator.matmul)
 
     __lshift__, __rlshift__ = methods(operator.lshift)
     __rshift__, __rrshift__ = methods(operator.rshift)
@@ -93,7 +92,7 @@ class F(partial):
     __ge__ = methods(operator.le)[1]
 
 
-class M(object):
+class M:
     """Singleton for creating method callers and multi-valued getters."""
 
     def __getattr__(cls, name):

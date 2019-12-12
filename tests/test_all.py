@@ -3,8 +3,6 @@ import pytest
 from parametrized import parametrized
 from placeholder import F, _, m
 
-py3 = hasattr(F, '__matmul__')
-
 
 def test_object():
     assert type(_) is F
@@ -66,10 +64,11 @@ def test_composition():
 
 
 @parametrized
-def test_errors(op='+ - * // / % ** << >> & ^ |'.split()):
-    func = eval('_ {} None'.format(op))
-    with pytest.raises(TypeError):
-        func(0)
+def test_errors(op='+ - * // / % ** << >> & ^ | @'.split()):
+    for expr in ('_ {} None', 'None {} _'):
+        func = eval(expr.format(op))
+        with pytest.raises(TypeError):
+            func(0)
 
 
 def test_unary():
@@ -81,17 +80,7 @@ def test_unary():
     assert list(reversed(_)('abc')) == ['c', 'b', 'a']
     assert math.trunc(_)(-1.1) == -1
 
-    if py3:
-        assert round(_)(0.1) == 0
-        assert round(_, 1)(0.11) == 0.1
-        assert math.floor(_)(-1.1) == -2
-        assert math.ceil(_)(-1.1) == -1
-
-
-@pytest.mark.skipif(not py3, reason="requires Python 3")
-@parametrized
-def test_matmul(expr=('_ @ None', 'None @ _')):
-    func = eval(expr)
-    assert isinstance(func, F)
-    with pytest.raises(TypeError):
-        func(0)
+    assert round(_)(0.1) == 0
+    assert round(_, 1)(0.11) == 0.1
+    assert math.floor(_)(-1.1) == -2
+    assert math.ceil(_)(-1.1) == -1
