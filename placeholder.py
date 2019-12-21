@@ -1,9 +1,17 @@
 import itertools
 import math
 import operator
-from functools import partial, update_wrapper
+from functools import partial
+from typing import Callable, Iterable, Iterator
 
 __version__ = '1.1'
+
+
+def update_wrapper(wrapper, func):
+    wrapper.__doc__ = func.__doc__
+    wrapper.__name__ = func.__name__
+    wrapper.__annotations__['return'] = 'F'
+    return wrapper
 
 
 def rpartial(func, other):
@@ -43,16 +51,20 @@ class F(partial):
         funcs = tuple(itertools.chain(*funcs))
         return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Callable]:
+        """Return composed functions in order."""
         return iter(self.args[0] if self.args else [self.func])
 
-    def __getattr__(self, attr):
+    def __getattr__(self, attr: str) -> 'F':
+        """Return `attrgetter`."""
         return type(self)(self, operator.attrgetter(attr))
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> 'F':
+        """Return `itemgetter`."""
         return type(self)(self, operator.itemgetter(item))
 
-    def __round__(self, ndigits=None):
+    def __round__(self, ndigits: int = None) -> 'F':
+        """Return `round(...)`."""
         return type(self)(self, round if ndigits is None else partial(round, ndigits=ndigits))
 
     __neg__ = unary(operator.neg)
@@ -95,15 +107,15 @@ class F(partial):
 class M:
     """Singleton for creating method callers and multi-valued getters."""
 
-    def __getattr__(cls, name):
+    def __getattr__(cls, name: str) -> F:
         """Return a `methodcaller` constructor."""
         return F(partial(operator.methodcaller, name), F)
 
-    def __call__(self, *names):
+    def __call__(self, *names: str) -> F:
         """Return a tupled `attrgetter`."""
         return F(operator.attrgetter(*names))
 
-    def __getitem__(self, keys):
+    def __getitem__(self, keys: Iterable) -> F:
         """Return a tupled `itemgetter`."""
         return F(operator.itemgetter(*keys))
 

@@ -8,6 +8,7 @@
 [![image](https://requires.io/github/coady/placeholder/requirements.svg)](https://requires.io/github/coady/placeholder/requirements/)
 [![image](https://api.codeclimate.com/v1/badges/3d859b1e30ffac79f10e/maintainability)](https://codeclimate.com/github/coady/placeholder/maintainability)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://pypi.org/project/black/)
+[![image](http://mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 
 A `placeholder` uses operator overloading to create partially bound functions on-the-fly.
 When used in a binary expression, it will return a callable object with the other argument bound.
