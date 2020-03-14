@@ -58,17 +58,20 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 ```
 
 # Installation
-
-    $ pip install placeholder
+```console
+% pip install placeholder
+```
 
 # Tests
 100% branch coverage.
 
-    $ pytest [--cov]
+```console
+% pytest [--cov]
+```
 
 # Changes
 dev
-* Python 3 required
+* Python >=3.6 required
 
 1.1
 * Additional unary functions

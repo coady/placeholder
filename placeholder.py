@@ -31,10 +31,10 @@ def methods(func):
     def left(self, other):
         if isinstance(other, F):
             return type(self)(self, func)
-        return type(self)(self, getattr(other, '__r{}__'.format(name), rpartial(func, other)))
+        return type(self)(self, getattr(other, f'__r{name}__', rpartial(func, other)))
 
     def right(self, other):
-        return type(self)(self, getattr(other, '__{}__'.format(name), partial(func, other)))
+        return type(self)(self, getattr(other, f'__{name}__', partial(func, other)))
 
     return update_wrapper(left, func), update_wrapper(right, func)
 
