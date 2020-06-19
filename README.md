@@ -72,6 +72,7 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 # Changes
 dev
 * Python >=3.6 required
+* Optimized `partial` implementation
 
 1.1
 * Additional unary functions

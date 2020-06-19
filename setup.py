@@ -1,9 +1,8 @@
-from setuptools import setup
-import placeholder
+from setuptools import setup, Extension
 
 setup(
     name='placeholder',
-    version=placeholder.__version__,
+    version='1.1',
     description='Operator overloading for fast anonymous functions.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',
@@ -12,7 +11,8 @@ setup(
     url='https://github.com/coady/placeholder',
     project_urls={'Documentation': 'https://placeholder.readthedocs.io'},
     license='Apache Software License',
-    py_modules=['placeholder'],
+    packages=['placeholder'],
+    ext_modules=[Extension('placeholder.partials', ['placeholder/partials.c'])],
     extras_require={'docs': ['recommonmark', 'nbsphinx', 'jupyter']},
     python_requires='>=3.6',
     tests_require=['pytest-cov', 'pytest-parametrized'],

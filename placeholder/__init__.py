@@ -3,6 +3,7 @@ import math
 import operator
 from functools import partial
 from typing import Callable, Iterable, Iterator
+from . import partials  # type: ignore
 
 __version__ = '1.1'
 
@@ -14,10 +15,6 @@ def update_wrapper(wrapper, func):
     return wrapper
 
 
-def rpartial(func, other):
-    return lambda self: func(self, other)
-
-
 def pipe(funcs, *args, **kwargs):
     value = funcs[0](*args, **kwargs)
     for func in funcs[1:]:
@@ -26,15 +23,13 @@ def pipe(funcs, *args, **kwargs):
 
 
 def methods(func):
-    name = func.__name__.rstrip('_')
-
     def left(self, other):
         if isinstance(other, F):
             return type(self)(self, func)
-        return type(self)(self, getattr(other, f'__r{name}__', rpartial(func, other)))
+        return type(self)(self, partials.partial(func, other).left)
 
     def right(self, other):
-        return type(self)(self, getattr(other, f'__{name}__', partial(func, other)))
+        return type(self)(self, partials.partial(func, other).right)
 
     return update_wrapper(left, func), update_wrapper(right, func)
 

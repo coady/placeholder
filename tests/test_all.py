@@ -7,6 +7,7 @@ from placeholder import F, _, m
 def test_object():
     assert type(_) is F
     assert F({}.get) > 1
+    assert (_ == 1)(1.0) is (1 == _)(1.0) is True
 
 
 def test_getters():
