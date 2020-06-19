@@ -9,6 +9,7 @@ install:
   - pip install pytest-cov pytest-parametrized codecov
 
 script:
+  - python setup.py build_ext -i
   - pytest -v --cov
 
 after_success:
