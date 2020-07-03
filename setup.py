@@ -12,6 +12,8 @@ setup(
     project_urls={'Documentation': 'https://placeholder.readthedocs.io'},
     license='Apache Software License',
     packages=['placeholder'],
+    package_data={'placeholder': ['py.typed']},
+    zip_safe=False,
     ext_modules=[Extension('placeholder.partials', ['placeholder/partials.c'])],
     extras_require={'docs': ['recommonmark', 'nbsphinx', 'jupyter']},
     python_requires='>=3.6',
@@ -27,5 +29,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Topic :: Software Development :: Libraries :: Python Modules',
+        'Typing :: Typed',
     ],
 )

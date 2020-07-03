@@ -2,27 +2,27 @@ import itertools
 import math
 import operator
 from functools import partial
-from typing import Callable, Iterable, Iterator
+from typing import Callable, Iterable, Iterator, Sequence
 from . import partials  # type: ignore
 
 __version__ = '1.1'
 
 
-def update_wrapper(wrapper, func):
+def update_wrapper(wrapper: Callable, func: Callable):
     wrapper.__doc__ = func.__doc__
     wrapper.__name__ = func.__name__
     wrapper.__annotations__['return'] = 'F'
     return wrapper
 
 
-def pipe(funcs, *args, **kwargs):
+def pipe(funcs: Sequence[Callable], *args, **kwargs):
     value = funcs[0](*args, **kwargs)
     for func in funcs[1:]:
         value = func(value)
     return value
 
 
-def methods(func):
+def methods(func: Callable):
     def left(self, other):
         if isinstance(other, F):
             return type(self)(self, func)
@@ -34,7 +34,7 @@ def methods(func):
     return update_wrapper(left, func), update_wrapper(right, func)
 
 
-def unary(func):
+def unary(func: Callable):
     return update_wrapper(lambda self: type(self)(self, func), func)
 
 
@@ -91,12 +91,10 @@ class F(partial):
     __xor__, __rxor__ = methods(operator.xor)
     __or__, __ror__ = methods(operator.or_)
 
-    __lt__ = methods(operator.gt)[1]
-    __le__ = methods(operator.ge)[1]
-    __eq__ = methods(operator.eq)[1]
-    __ne__ = methods(operator.ne)[1]
-    __gt__ = methods(operator.lt)[1]
-    __ge__ = methods(operator.le)[1]
+    __eq__ = methods(operator.eq)[0]
+    __ne__ = methods(operator.ne)[0]
+    __lt__, __gt__ = methods(operator.lt)
+    __le__, __ge__ = methods(operator.le)
 
 
 class M:
