@@ -2,35 +2,35 @@ name: build
 
 on:
   push:
-    branches: [master]
+    branches: [main]
   pull_request:
-    branches: [master]
+    branches: [main]
 
 jobs:
-  build:
-
+  test:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
-
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+    - uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install dependencies
-      run: |
-        pip install black flake8 mypy pytest-cov pytest-parametrized codecov
-        pip install -r docs/requirements.txt
-    - name: Lint
-      run: |
+    - run: |
+        pip install pytest-cov pytest-parametrized codecov
+        make
+        pytest -v --cov
+        codecov
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v2
+      with:
+        python-version: 3.x
+    - run: |
+        pip install black flake8 mypy
         black --check .
         flake8
         mypy -p placeholder
-    - name: Test
-      run: |
-        make docs
-        pytest -v --cov
-        codecov

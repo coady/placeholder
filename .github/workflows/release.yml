@@ -6,25 +6,19 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  publish:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v2
       with:
         python-version: 3.x
-    - name: Install dependencies
-      run: |
+    - run: |
         pip install -r docs/requirements.txt
-    - name: Build
-      run: |
-        make docs
         python setup.py sdist
-    - name: Publish
-      uses: pypa/gh-action-pypi-publish@master
+        make docs
+        mkdocs gh-deploy
+    - uses: pypa/gh-action-pypi-publish@master
       with:
         password: ${{ secrets.PYPI_TOKEN }}
         verbose: true
-      run: |
-        mkdocs gh-deploy
