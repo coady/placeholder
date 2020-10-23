@@ -1,0 +1,18 @@
+site_name: placeholder
+site_description: Operator overloading for fast anonymous functions.
+theme: material
+
+repo_name: coady/placeholder
+repo_url: https://github.com/coady/placeholder
+edit_uri: ""
+
+nav:
+  - Introduction: index.md
+  - Reference: reference.md
+  - Examples: examples.ipynb
+
+plugins:
+  - search
+  - mkdocstrings
+  - mkdocs-jupyter:
+      execute: True

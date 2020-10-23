@@ -4,7 +4,6 @@
 ![image](https://img.shields.io/pypi/status/placeholder.svg)
 [![image](https://img.shields.io/travis/coady/placeholder.svg)](https://travis-ci.org/coady/placeholder)
 [![image](https://img.shields.io/codecov/c/github/coady/placeholder.svg)](https://codecov.io/github/coady/placeholder)
-[![image](https://readthedocs.org/projects/placeholder/badge)](https://placeholder.readthedocs.io)
 [![image](https://requires.io/github/coady/placeholder/requirements.svg)](https://requires.io/github/coady/placeholder/requirements/)
 [![image](https://api.codeclimate.com/v1/badges/3d859b1e30ffac79f10e/maintainability)](https://codeclimate.com/github/coady/placeholder/maintainability)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://pypi.org/project/black/)
@@ -14,7 +13,7 @@ A `placeholder` uses operator overloading to create partially bound functions on
 When used in a binary expression, it will return a callable object with the other argument bound.
 It's useful for replacing `lambda` in functional programming, and resembles Scala's placeholders.
 
-# Usage
+## Usage
 ```python
 from placeholder import _     # single underscore
 
@@ -36,7 +35,7 @@ from placeholder import F
 
 All applicable double underscore methods are supported.
 
-# Performance
+## Performance
 Every effort is made to optimize the placeholder instance.
 It's 20-40x faster than similar libraries on PyPI.
 
@@ -57,39 +56,45 @@ min(data, key=_[-1])                      # 25.9 ms
 min(data, key=lambda x: x[-1])            # 27.2 ms
 ```
 
-# Installation
+## Installation
 ```console
 % pip install placeholder
 ```
 
-# Tests
+## Tests
 100% branch coverage.
 
 ```console
 % pytest [--cov]
 ```
 
-# Changes
+## Changes
 dev
+
 * Python >=3.6 required
 * Optimized `partial` implementation
 
 1.1
+
 * Additional unary functions
 
 1.0
+
 * Removed `__` (double underscore)
 * Variable arguments of first function
 * Method callers and multi-valued getters
 
 0.7
+
 * Deprecated `__` (double underscore)
 
 0.6
+
 * Optimized composite functions
 * Renamed to `_` (single underscore) for consistency
 
 0.5
+
 * Unary operators
 * `__call__` implements `methodcaller`
 * `__getitem__` supports only single argument
