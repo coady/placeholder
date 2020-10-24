@@ -2,7 +2,7 @@ from setuptools import setup, Extension
 
 setup(
     name='placeholder',
-    version='1.1',
+    version='1.2',
     description='Operator overloading for fast anonymous functions.',
     long_description=open('README.md').read(),
     long_description_content_type='text/markdown',

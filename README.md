@@ -4,7 +4,7 @@
 ![image](https://img.shields.io/pypi/status/placeholder.svg)
 [![image](https://github.com/coady/placeholder/workflows/build/badge.svg)](https://github.com/coady/placeholder/actions)
 [![image](https://img.shields.io/codecov/c/github/coady/placeholder.svg)](https://codecov.io/github/coady/placeholder)
-[![image](https://requires.io/github/coady/placeholder/requirements.svg)](https://requires.io/github/coady/placeholder/requirements/)
+[![image](https://requires.io/github/coady/placeholder/requirements.svg?branch=main)](https://requires.io/github/coady/placeholder/requirements/)
 [![image](https://api.codeclimate.com/v1/badges/3d859b1e30ffac79f10e/maintainability)](https://codeclimate.com/github/coady/placeholder/maintainability)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://pypi.org/project/black/)
 [![image](http://mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
@@ -69,7 +69,7 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 ```
 
 ## Changes
-dev
+1.2
 
 * Python >=3.6 required
 * Optimized `partial` implementation
