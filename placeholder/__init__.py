@@ -39,7 +39,11 @@ def unary(func: Callable):
 
 
 class F(partial):
-    """Singleton for creating composite functions."""
+    """Singleton for creating composite functions.
+
+    Args:
+        *funcs (Callable): ordered callables
+    """
 
     def __new__(cls, *funcs):
         funcs = (func if isinstance(func, cls) else [func] for func in funcs)

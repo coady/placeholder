@@ -13,6 +13,10 @@ nav:
 
 plugins:
   - search
-  - mkdocstrings
+  - mkdocstrings:
+      handlers:
+        python:
+          rendering:
+            show_root_heading: true
   - mkdocs-jupyter:
       execute: True

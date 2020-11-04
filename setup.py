@@ -15,7 +15,6 @@ setup(
     package_data={'placeholder': ['py.typed']},
     zip_safe=False,
     ext_modules=[Extension('placeholder.partials', ['placeholder/partials.c'])],
-    extras_require={'docs': open('docs/requirements.txt').read().splitlines()},
     python_requires='>=3.6',
     tests_require=['pytest-cov', 'pytest-parametrized'],
     keywords='functional lambda scala underscore',
