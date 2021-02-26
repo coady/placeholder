@@ -1,2 +1,2 @@
-include LICENSE.txt
+include LICENSE.txt docs/requirements.txt
 recursive-include tests *.py
