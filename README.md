@@ -62,6 +62,10 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 ```
 
 ## Changes
+1.2.1
+
+* setup fix
+
 1.2
 
 * Python >=3.6 required
