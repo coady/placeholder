@@ -1,4 +1,5 @@
 site_name: placeholder
+site_url: https://coady.github.io/placeholder/
 site_description: Operator overloading for fast anonymous functions.
 theme: material
 

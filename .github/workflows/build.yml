@@ -19,6 +19,7 @@ jobs:
         python-version: ${{ matrix.python-version }}
     - run: pip install pytest-cov pytest-parametrized
     - run: make check
+    - run: coverage xml
     - uses: codecov/codecov-action@v2
 
   lint:

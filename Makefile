@@ -2,7 +2,7 @@ all:
 	python3 setup.py build_ext -i
 
 check: all
-	pytest --cov
+	pytest -s --cov
 
 lint:
 	black --check .

@@ -63,31 +63,39 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 
 ## Changes
 dev
+
 * Python >=3.7 required
 
 1.2.1
+
 * setup fix
 
 1.2
+
 * Python >=3.6 required
 * Optimized `partial` implementation
 
 1.1
+
 * Additional unary functions
 
 1.0
+
 * Removed `__` (double underscore)
 * Variable arguments of first function
 * Method callers and multi-valued getters
 
 0.7
+
 * Deprecated `__` (double underscore)
 
 0.6
+
 * Optimized composite functions
 * Renamed to `_` (single underscore) for consistency
 
 0.5
+
 * Unary operators
 * `__call__` implements `methodcaller`
 * `__getitem__` supports only single argument
