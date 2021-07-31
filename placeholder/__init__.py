@@ -1,6 +1,7 @@
 import itertools
 import math
 import operator
+import warnings
 from functools import partial
 from typing import Callable, Iterable, Iterator, Sequence
 from . import partials  # type: ignore
@@ -52,10 +53,17 @@ class F(partial):
 
     def __iter__(self) -> Iterator[Callable]:
         """Return composed functions in order."""
-        return iter(self.args[0] if self.args else [self.func])
+        args = super().__getattribute__('args')
+        return iter(args[0] if args else [super().__getattribute__('func')])
 
-    def __getattr__(self, attr: str) -> 'F':
+    def __getattribute__(self, attr: str) -> 'F':
         """Return `attrgetter`."""
+        if attr == 'func':
+            msg = "`.func` won't return the partial's callable in the future"
+            warnings.warn(msg, DeprecationWarning, stacklevel=2)
+            return super().__getattribute__(attr)
+        if attr.startswith('__') and attr.endswith('__'):
+            return super().__getattribute__(attr)
         return type(self)(self, operator.attrgetter(attr))
 
     def __getitem__(self, item) -> 'F':

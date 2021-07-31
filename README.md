@@ -33,20 +33,18 @@ All applicable double underscore methods are supported.
 ## Performance
 Every effort is made to optimize the placeholder instance. It's 20-40x faster than similar libraries on PyPI.
 
-However, there is slight overhead (in CPython) in making an object callable. Placeholders with single operators can access the `func` attribute directly for optimal performance.
+Placeholders are also iterable, allowing direct access to the underlying functions.
 
 ```python
-_.age.func         # operator.attrgetter('age')
-_[key].func        # operator.itemgetter(key)
+(func,) = _.age  # operator.attrgetter('age')
 ```
 
-Performance should generally be comparable to inlined expressions,
-and faster than lambda. Below are some example benchmarks.
+Performance should generally be comparable to inlined expressions, and faster than lambda. Below are some example benchmarks.
 
 ```python
-min(data, key=operator.itemgetter(-1))    # 22.7 ms
-min(data, key=_[-1])                      # 25.9 ms
-min(data, key=lambda x: x[-1])            # 27.2 ms
+min(data, key=operator.itemgetter(-1))    # 1x
+min(data, key=_[-1])                      # 1.3x
+min(data, key=lambda x: x[-1])            # 1.6x
 ```
 
 ## Installation
@@ -65,10 +63,11 @@ min(data, key=lambda x: x[-1])            # 27.2 ms
 dev
 
 * Python >=3.7 required
+* Deprecated accessing `func` attribute of partial object
 
 1.2.1
 
-* setup fix
+* Setup fix
 
 1.2
 
