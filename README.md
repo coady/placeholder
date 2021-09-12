@@ -60,7 +60,7 @@ min(data, key=lambda x: x[-1])            # 1.6x
 ```
 
 ## Changes
-dev
+1.3
 
 * Python >=3.7 required
 * Deprecated accessing `func` attribute of partial object

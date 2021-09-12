@@ -6,7 +6,7 @@ from functools import partial
 from typing import Callable, Iterable, Iterator, Sequence
 from . import partials  # type: ignore
 
-__version__ = '1.2.1'
+__version__ = '1.3'
 
 
 def update_wrapper(wrapper: Callable, func: Callable):
