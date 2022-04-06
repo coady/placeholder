@@ -1,7 +1,6 @@
 import itertools
 import math
 import operator
-import warnings
 from functools import partial
 from typing import Callable, Iterable, Iterator, Sequence
 from . import partials  # type: ignore
@@ -58,10 +57,6 @@ class F(partial):
 
     def __getattribute__(self, attr: str) -> 'F':
         """Return `attrgetter`."""
-        if attr == 'func':
-            msg = "`.func` won't return the partial's callable in the future"
-            warnings.warn(msg, DeprecationWarning, stacklevel=2)
-            return super().__getattribute__(attr)
         if attr.startswith('__') and attr.endswith('__'):
             return super().__getattribute__(attr)
         return type(self)(self, operator.attrgetter(attr))
