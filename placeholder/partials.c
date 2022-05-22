@@ -1,3 +1,4 @@
+#define Py_LIMITED_API 0x03070000
 #include "Python.h"
 
 typedef struct {
@@ -9,9 +10,9 @@ typedef struct {
 static void
 partial_dealloc(partial *self)
 {
-    Py_XDECREF(self->func);
-    Py_XDECREF(self->arg);
-    Py_TYPE(self)->tp_free(self);
+    Py_DecRef(self->func);
+    Py_DecRef(self->arg);
+    PyObject_Free(self);
 }
 
 static int
@@ -20,8 +21,8 @@ partial_init(partial *self, PyObject *args, PyObject *kwargs)
     static char *kwlist[] = {"func", "arg", NULL};
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:partial", kwlist, &self->func, &self->arg))
         return -1;
-    Py_XINCREF(self->func);
-    Py_XINCREF(self->arg);
+    Py_IncRef(self->func);
+    Py_IncRef(self->arg);
     return 0;
 }
 
@@ -34,15 +35,13 @@ partial_str(partial *self)
 static PyObject *
 partial_left(partial *self, PyObject *arg)
 {
-    PyObject *const args[2] = {arg, self->arg};
-    return _PyObject_FastCall(self->func, (PyObject *const *) &args, 2);
+    return PyObject_CallFunctionObjArgs(self->func, arg, self->arg, NULL);
 }
 
 static PyObject *
 partial_right(partial *self, PyObject *arg)
 {
-    PyObject *const args[2] = {self->arg, arg};
-    return _PyObject_FastCall(self->func, (PyObject *const *) &args, 2);
+    return PyObject_CallFunctionObjArgs(self->func, self->arg, arg, NULL);
 }
 
 static PyMethodDef partial_methods[] = {
@@ -51,38 +50,48 @@ static PyMethodDef partial_methods[] = {
     {NULL}  /* Sentinel */
 };
 
-static PyTypeObject PartialType = {
-    PyVarObject_HEAD_INIT(NULL, 0)
-    .tp_name = "placeholder.partial",
-    .tp_doc = "Partially bound binary function.",
-    .tp_basicsize = sizeof(partial),
-    .tp_itemsize = 0,
-    .tp_flags = Py_TPFLAGS_DEFAULT,
-    .tp_new = PyType_GenericNew,
-    .tp_dealloc = (destructor)partial_dealloc,
-    .tp_init = (initproc)partial_init,
-    .tp_str = (reprfunc)partial_str,
-    .tp_methods = partial_methods,
+static PyType_Slot partial_slots[] = {
+    {Py_tp_doc, PyDoc_STR("Partially bound binary function.")},
+    {Py_tp_dealloc, partial_dealloc},
+    {Py_tp_init, partial_init},
+    {Py_tp_str, partial_str},
+    {Py_tp_methods, partial_methods},
+    {0, NULL}
+};
+
+static PyType_Spec partial_spec = {
+    "placeholder.partial",
+    sizeof(partial),
+    0,
+    Py_TPFLAGS_DEFAULT,
+    partial_slots,
+};
+
+static int
+partials_mod_exec(PyObject *module)
+{
+    PyObject *PartialType = PyType_FromSpec(&partial_spec);
+    if (!PartialType)
+        return -1;
+    if (!PyModule_AddObject(module, "partial", PartialType))
+        return 0;
+    Py_DecRef(PartialType);
+    return -1;
+}
+
+static PyModuleDef_Slot partials_slots[] = {
+    {Py_mod_exec, partials_mod_exec},
+    {0, NULL}
 };
 
 static PyModuleDef partialsmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "partials",
     .m_doc = "Partially bound binary functions.",
-    .m_size = -1,
+    .m_slots = partials_slots,
 };
 
 PyMODINIT_FUNC PyInit_partials(void)
 {
-    if (PyType_Ready(&PartialType))
-        return NULL;
-    PyObject *m = PyModule_Create(&partialsmodule);
-    if (!m)
-        return NULL;
-    Py_INCREF(&PartialType);
-    if (!PyModule_AddObject(m, "partial", (PyObject *) &PartialType))
-        return m;
-    Py_DECREF(&PartialType);
-    Py_DECREF(m);
-    return NULL;
+    return PyModuleDef_Init(&partialsmodule);
 }
