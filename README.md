@@ -60,6 +60,11 @@ min(data, key=lambda x: x[-1])            # 1.6x
 ```
 
 ## Changes
+dev
+
+* Stable abi wheels
+* Removed `func` attribute
+
 1.3
 
 * Python >=3.7 required

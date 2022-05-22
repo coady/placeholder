@@ -87,7 +87,7 @@ static PyModuleDef_Slot partials_slots[] = {
 static PyModuleDef partialsmodule = {
     PyModuleDef_HEAD_INIT,
     .m_name = "partials",
-    .m_doc = "Partially bound binary functions.",
+    .m_doc = PyDoc_STR("Partially bound binary functions."),
     .m_slots = partials_slots,
 };
 
