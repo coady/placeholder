@@ -29,9 +29,9 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v3
-    - uses: pypa/cibuildwheel@v2.6.0
+    - uses: pypa/cibuildwheel@2.6.1
       env:
-        CIBW_BUILD: cp3*
+        CIBW_BUILD: cp37-*
     - uses: actions/setup-python@v4
       with:
         python-version: 3.x
