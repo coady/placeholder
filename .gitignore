@@ -1,7 +1,6 @@
 __pycache__/
 .coverage
 site/
-.mypy_cache/
 *.so
 *.o
 .venv

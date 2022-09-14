@@ -6,7 +6,7 @@ check: all
 
 lint:
 	black --check .
-	flake8
+	flake8 --ignore E501
 	mypy -p placeholder
 
 html: all
