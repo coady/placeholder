@@ -2,7 +2,7 @@ import itertools
 import math
 import operator
 from functools import partial
-from typing import Callable, Iterable, Iterator, Sequence
+from typing import Callable, Iterable, Iterator, Optional, Sequence
 from . import partials  # type: ignore
 
 __version__ = '1.4'
@@ -65,7 +65,7 @@ class F(partial):
         """Return `itemgetter`."""
         return type(self)(self, operator.itemgetter(item))
 
-    def __round__(self, ndigits: int = None) -> 'F':
+    def __round__(self, ndigits: Optional[int] = None) -> 'F':
         """Return `round(...)`."""
         return type(self)(self, round if ndigits is None else partial(round, ndigits=ndigits))
 
