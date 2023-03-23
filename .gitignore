@@ -3,4 +3,3 @@ __pycache__/
 site/
 *.so
 *.o
-.venv
