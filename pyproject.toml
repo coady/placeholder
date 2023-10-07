@@ -29,6 +29,8 @@ classifiers = [
 [project.urls]
 Homepage = "https://github.com/coady/placeholder"
 Documentation = "https://coady.github.io/placeholder"
+Changelog = "https://github.com/coady/placeholder/blob/main/CHANGELOG.md"
+Issues = "https://github.com/coady/placeholder/issues"
 
 [tool.setuptools]
 packages = ["placeholder"]

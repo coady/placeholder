@@ -6,7 +6,7 @@
 [![image](https://codecov.io/gh/coady/placeholder/branch/main/graph/badge.svg)](https://codecov.io/gh/coady/placeholder/)
  [![image](https://github.com/coady/placeholder/workflows/codeql/badge.svg)](https://github.com/coady/placeholder/security/code-scanning)
 [![image](https://img.shields.io/badge/code%20style-black-000000.svg)](https://pypi.org/project/black/)
-[![image](http://mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![image](https://mypy-lang.org/static/mypy_badge.svg)](https://mypy-lang.org/)
 
 A `placeholder` uses operator overloading to create partially bound functions on-the-fly. When used in a binary expression, it will return a callable object with the other argument bound. It's useful for replacing `lambda` in functional programming, and resembles Scala's placeholders.
 
@@ -58,54 +58,3 @@ min(data, key=lambda x: x[-1])            # 1.6x
 ```console
 % pytest [--cov]
 ```
-
-## Changes
-dev
-
-* Python >=3.8 required
-
-1.4
-
-* Stable abi wheels
-* Removed `func` attribute
-
-1.3
-
-* Python >=3.7 required
-* Deprecated accessing `func` attribute of partial object
-
-1.2.1
-
-* Setup fix
-
-1.2
-
-* Python >=3.6 required
-* Optimized `partial` implementation
-
-1.1
-
-* Additional unary functions
-
-1.0
-
-* Removed `__` (double underscore)
-* Variable arguments of first function
-* Method callers and multi-valued getters
-
-0.7
-
-* Deprecated `__` (double underscore)
-
-0.6
-
-* Optimized composite functions
-* Renamed to `_` (single underscore) for consistency
-
-0.5
-
-* Unary operators
-* `__call__` implements `methodcaller`
-* `__getitem__` supports only single argument
-* Improved error handling
-* `composer` object deprecated in favor of optimized `F` expression
