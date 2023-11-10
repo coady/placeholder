@@ -5,8 +5,8 @@ check: all
 	pytest -s --cov
 
 lint:
-	black --check .
 	ruff .
+	ruff format --check .
 	mypy -p placeholder
 
 html: all
