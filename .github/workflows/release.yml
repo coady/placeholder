@@ -8,7 +8,6 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions: write-all
     steps:
     - uses: actions/checkout@v4
     - uses: actions/setup-python@v4
@@ -18,7 +17,9 @@ jobs:
     - run: python -m build -ns
     - run: make
     - run: PYTHONPATH=$PWD mkdocs gh-deploy --force
-    - uses: pypa/gh-action-pypi-publish@release/v1
+    - uses: actions/upload-artifact@v3
+      with:
+        path: dist/
 
   wheels:
     runs-on: ${{ matrix.os }}
@@ -27,11 +28,26 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     steps:
     - uses: actions/checkout@v4
+    - if: runner.os == 'Linux'
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: all
     - uses: pypa/cibuildwheel@v2.16.2
       env:
         CIBW_BUILD: cp38-*
-    - uses: actions/setup-python@v4
+        CIBW_ARCHS_LINUX: auto aarch64
+        CIBW_ARCHS_MACOS: x86_64 arm64
+    - uses: actions/upload-artifact@v3
       with:
-        python-version: 3.x
-    - run: pip install twine
-    - run: twine upload -u __token__ -p ${{ secrets.PYPI_TOKEN }} wheelhouse/*
+        path: wheelhouse/
+
+  upload:
+    needs: [publish, wheels]
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+    - uses: actions/download-artifact@v3
+    - uses: pypa/gh-action-pypi-publish@release/v1
+      with:
+        packages-dir: artifact/

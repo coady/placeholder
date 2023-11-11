@@ -2,7 +2,7 @@ all:
 	python setup.py build_ext -i
 
 check: all
-	pytest -s --cov
+	python -m pytest -s --cov
 
 lint:
 	ruff .
