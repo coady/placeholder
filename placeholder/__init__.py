@@ -1,9 +1,9 @@
 import itertools
 import math
 import operator
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import partial
-from typing import Iterator, Optional, Sequence
+from typing import Optional
 from . import partials  # type: ignore
 
 __version__ = '1.5'

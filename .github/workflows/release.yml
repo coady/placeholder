@@ -32,9 +32,9 @@ jobs:
       uses: docker/setup-qemu-action@v3
       with:
         platforms: all
-    - uses: pypa/cibuildwheel@v2.16.2
+    - uses: pypa/cibuildwheel@v2.16
       env:
-        CIBW_BUILD: cp38-*
+        CIBW_BUILD: cp39-*
         CIBW_ARCHS_LINUX: auto aarch64
         CIBW_ARCHS_MACOS: x86_64 arm64
     - uses: actions/upload-artifact@v3
