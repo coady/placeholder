@@ -5,7 +5,7 @@ check: all
 	python -m pytest -s --cov
 
 lint:
-	ruff .
+	ruff check .
 	ruff format --check .
 	mypy -p placeholder
 
