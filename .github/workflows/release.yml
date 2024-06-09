@@ -2,6 +2,7 @@ name: release
 
 on:
   push:
+    branches: [rc]
     tags:
       - 'v*'
 
@@ -16,7 +17,7 @@ jobs:
     - run: pip install build -r docs/requirements.in
     - run: python -m build -s
     - run: make
-    - run: PYTHONPATH=$PWD mkdocs gh-deploy --force
+    - run: PYTHONPATH=$PWD mkdocs build
     - uses: actions/upload-artifact@v4
       with:
         name: artifact-sdist
@@ -54,4 +55,4 @@ jobs:
         path: dist/
         pattern: artifact-*
         merge-multiple: true
-    - uses: pypa/gh-action-pypi-publish@release/v1
+    - run: ls dist
