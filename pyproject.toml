@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61", "wheel"]
+requires = ["setuptools>=61"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "placeholder"
-dynamic = ["version"]
+version = "1.5"
 description = "Operator overloading for fast anonymous functions."
 readme = "README.md"
 requires-python = ">=3.9"
@@ -34,12 +34,6 @@ Issues = "https://github.com/coady/placeholder/issues"
 
 [tool.setuptools]
 packages = ["placeholder"]
-
-[tool.setuptools.dynamic]
-version = {attr = "placeholder.__version__"}
-
-[tool.setuptools.package-data]
-placeholder = ["py.typed"]
 
 [tool.ruff]
 line-length = 100

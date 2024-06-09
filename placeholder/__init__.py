@@ -6,8 +6,6 @@ from functools import partial
 from typing import Optional
 from . import partials  # type: ignore
 
-__version__ = '1.5'
-
 
 def update_wrapper(wrapper: Callable, func: Callable):
     wrapper.__doc__ = func.__doc__
