@@ -16,8 +16,7 @@ jobs:
       with:
         python-version: 3.x
     - run: pip install -r tests/requirements.in
-    - run: make
     - uses: CodSpeedHQ/action@v2
       with:
         token: ${{ secrets.CODSPEED_TOKEN }}
-        run: python -m pytest --codspeed
+        run: make bench

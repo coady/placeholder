@@ -4,6 +4,9 @@ all:
 check: all
 	python -m pytest -s --cov
 
+bench: all
+	python -m pytest --codspeed
+
 lint:
 	ruff check .
 	ruff format --check .
