@@ -11,6 +11,7 @@ def test_object():
     assert list(F(len)) == [len]
 
 
+@pytest.mark.benchmark
 def test_getters():
     assert (_.append)(list) is list.append
     with pytest.raises(AttributeError):
@@ -26,6 +27,7 @@ def test_getters():
     assert m[0, -1]('abc') == ('a', 'c')
 
 
+@pytest.mark.benchmark
 def test_math():
     assert (_ + 1)(2) == (1 + _)(2) == 3
     assert (_ - 1)(2) == (3 - _)(2) == 1
@@ -50,6 +52,7 @@ def test_binary():
     assert (_ ^ 3)(5) == (5 ^ _)(3) == 6
 
 
+@pytest.mark.benchmark
 @parametrized.zip
 def test_comparisons(x=(1, 1.0), y=(2, 2.0)):
     assert (_ < y)(x) and (_ > x)(y)
