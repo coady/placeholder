@@ -7,7 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 ### Changed
 * Python >=3.9 required
 
-## [1.5](https://pypi.org/project/placeholder/1.5/) - 2022-11-10
+## [1.5](https://pypi.org/project/placeholder/1.5/) - 2023-11-10
 ### Changed
 * Python >=3.8 required
 
