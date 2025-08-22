@@ -3,3 +3,4 @@ __pycache__/
 site/
 *.so
 *.o
+uv.lock
