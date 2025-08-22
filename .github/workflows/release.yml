@@ -2,21 +2,17 @@ name: release
 
 on:
   push:
-    tags:
-      - 'v*'
+    tags: ['v*']
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v5
-    - uses: actions/setup-python@v5
-      with:
-        python-version: 3.x
-    - run: pip install build -r docs/requirements.in
-    - run: python -m build -s
+    - uses: astral-sh/setup-uv@v6
+    - run: uv build --sdist
     - run: make
-    - run: PYTHONPATH=$PWD mkdocs gh-deploy --force
+    - run: uv run --with placeholder mkdocs gh-deploy --force
     - uses: actions/upload-artifact@v4
       with:
         name: artifact-sdist

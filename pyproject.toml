@@ -8,13 +8,12 @@ version = "1.5"
 description = "Operator overloading for fast anonymous functions."
 readme = "README.md"
 requires-python = ">=3.10"
-license = {file = "LICENSE.txt"}
+license = "Apache-2.0"
 authors = [{name = "Aric Coady", email = "aric.coady@gmail.com"}]
 keywords = ["functional", "lambda", "scala", "underscore"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
-    "License :: OSI Approved :: Apache Software License",
     "Operating System :: OS Independent",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
@@ -47,3 +46,15 @@ branch = true
 
 [tool.pytest.ini_options]
 markers = ["benchmark"]
+
+[dependency-groups]
+dev = [
+    "setuptools",
+    "pytest-cov",
+    "pytest-codspeed",
+    "pytest-parametrized",
+    "ruff",
+    "mypy",
+    "mkdocstrings[python]",
+    "mkdocs-jupyter",
+]

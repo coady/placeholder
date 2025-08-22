@@ -1,16 +1,16 @@
 all:
-	python setup.py build_ext -i
+	uv run python setup.py build_ext -i
 
 check: all
-	python -m pytest -s --cov
+	uv run pytest -s --cov
 
 bench: all
-	python -m pytest --codspeed
+	uv run pytest --codspeed
 
 lint:
-	ruff check .
-	ruff format --check .
-	mypy -p placeholder
+	uv run ruff check .
+	uv run ruff format --check .
+	uv run mypy -p placeholder
 
 html: all
-	PYTHONPATH=$(PWD) python -m mkdocs build
+	uv run --with placeholder mkdocs build
