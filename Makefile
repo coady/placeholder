@@ -13,4 +13,4 @@ lint:
 	uv run mypy -p placeholder
 
 html: all
-	uv run --with placeholder mkdocs build
+	uv run mkdocs build

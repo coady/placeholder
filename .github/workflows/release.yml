@@ -12,7 +12,7 @@ jobs:
     - uses: astral-sh/setup-uv@v6
     - run: uv build --sdist
     - run: make
-    - run: uv run --with placeholder mkdocs gh-deploy --force
+    - run: uv run mkdocs gh-deploy --force
     - uses: actions/upload-artifact@v4
       with:
         name: artifact-sdist
