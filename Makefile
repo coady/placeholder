@@ -1,3 +1,6 @@
+build:
+	python setup.py build_ext -i
+
 all:
 	uv run python setup.py build_ext -i
 
