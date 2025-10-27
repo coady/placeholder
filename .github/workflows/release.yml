@@ -13,7 +13,7 @@ jobs:
     - run: uv build --sdist
     - run: make
     - run: uv run mkdocs gh-deploy --force
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: artifact-sdist
         path: dist/
@@ -34,7 +34,7 @@ jobs:
         CIBW_BUILD: cp310-*
         CIBW_ARCHS_LINUX: auto aarch64
         CIBW_ARCHS_MACOS: x86_64 arm64
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       with:
         name: artifact-${{ matrix.os }}
         path: wheelhouse/
