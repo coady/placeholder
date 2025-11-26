@@ -50,12 +50,12 @@ min(data, key=lambda x: x[-1])            # 1.6x
 
 ## Installation
 ```console
-% pip install placeholder
+pip install placeholder
 ```
 
 ## Tests
 100% branch coverage.
 
 ```console
-% pytest [--cov]
+pytest [--cov]
 ```

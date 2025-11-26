@@ -11,8 +11,8 @@ bench: all
 	uv run pytest --codspeed
 
 lint:
-	uv run ruff check .
-	uv run ruff format --check .
+	uv run ruff check
+	uv run ruff format --check
 	uv run mypy -p placeholder
 
 html: all

@@ -38,7 +38,7 @@ packages = ["placeholder"]
 line-length = 100
 
 [tool.ruff.format]
-quote-style = "single"
+quote-style = "preserve"
 
 [tool.coverage.run]
 source = ["placeholder"]
