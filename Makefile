@@ -11,9 +11,9 @@ bench: all
 	uv run pytest --codspeed
 
 lint:
-	uv run ruff check
-	uv run ruff format --check
-	uv run mypy -p placeholder
+	uvx ruff check
+	uvx ruff format --check
+	uvx ty check placeholder
 
 html: all
-	uv run mkdocs build
+	uv run --group docs mkdocs build

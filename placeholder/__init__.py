@@ -8,7 +8,7 @@ from . import partials  # type: ignore
 
 def update_wrapper(wrapper: Callable, func: Callable):
     wrapper.__doc__ = func.__doc__
-    wrapper.__name__ = func.__name__
+    wrapper.__name__ = func.__name__  # type: ignore
     wrapper.__annotations__['return'] = 'F'
     return wrapper
 
@@ -46,7 +46,7 @@ class F(partial):
     def __new__(cls, *funcs):
         funcs = (func if isinstance(func, cls) else [func] for func in funcs)
         funcs = tuple(itertools.chain(*funcs))
-        return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))
+        return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))  # type: ignore
 
     def __iter__(self) -> Iterator[Callable]:
         """Return composed functions in order."""
