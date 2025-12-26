@@ -4,13 +4,14 @@ import operator
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import partial
 from typing import Self
+
 from . import partials  # type: ignore
 
 
 def update_wrapper(wrapper: Callable, func: Callable):
     wrapper.__doc__ = func.__doc__
     wrapper.__name__ = func.__name__  # type: ignore
-    wrapper.__annotations__['return'] = 'F'
+    wrapper.__annotations__["return"] = "F"
     return wrapper
 
 
@@ -51,12 +52,12 @@ class F(partial):
 
     def __iter__(self) -> Iterator[Callable]:
         """Return composed functions in order."""
-        args = super().__getattribute__('args')
-        return iter(args[0] if args else [super().__getattribute__('func')])
+        args = super().__getattribute__("args")
+        return iter(args[0] if args else [super().__getattribute__("func")])
 
     def __getattribute__(self, attr: str) -> Self:
         """Return `attrgetter`."""
-        if attr.startswith('__') and attr.endswith('__'):
+        if attr.startswith("__") and attr.endswith("__"):
             return super().__getattribute__(attr)
         return type(self)(self, operator.attrgetter(attr))
 

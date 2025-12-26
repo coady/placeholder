@@ -1,6 +1,8 @@
 import math
+
 import pytest
 from parametrized import parametrized
+
 from placeholder import F, _, m
 
 
@@ -21,10 +23,10 @@ def test_getters():
         _[0]({})
     with pytest.raises(IndexError):
         _[0]([])
-    assert sorted(enumerate('cba'), key=_[1]) == [(2, 'a'), (1, 'b'), (0, 'c')]
-    assert m.split('-')('a-b') == ['a', 'b']
-    assert m('real', 'imag')(1) == (1, 0)
-    assert m[0, -1]('abc') == ('a', 'c')
+    assert sorted(enumerate("cba"), key=_[1]) == [(2, "a"), (1, "b"), (0, "c")]
+    assert m.split("-")("a-b") == ["a", "b"]
+    assert m("real", "imag")(1) == (1, 0)
+    assert m[0, -1]("abc") == ("a", "c")
 
 
 @pytest.mark.benchmark
@@ -62,15 +64,15 @@ def test_comparisons(x=(1, 1.0), y=(2, 2.0)):
 
 def test_composition():
     f = F(len) + 1
-    assert f('') == 1
-    assert (f * 2)('') == 2
+    assert f("") == 1
+    assert (f * 2)("") == 2
     mean = (_ + _) / 2.0
     assert mean(0, 1) == 0.5
 
 
 @parametrized
-def test_errors(op='+ - * // / % ** << >> & ^ | @'.split()):
-    for expr in ('_ {} None', 'None {} _'):
+def test_errors(op="+ - * // / % ** << >> & ^ | @".split()):
+    for expr in ("_ {} None", "None {} _"):
         func = eval(expr.format(op))
         with pytest.raises(TypeError):
             func(0)
@@ -82,7 +84,7 @@ def test_unary():
     assert (~_)(0) == -1
 
     assert abs(_)(-1) == 1
-    assert list(reversed(_)('abc')) == ['c', 'b', 'a']
+    assert list(reversed(_)("abc")) == ["c", "b", "a"]
     assert math.trunc(_)(-1.1) == -1
 
     assert round(_)(0.1) == 0
