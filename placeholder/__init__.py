@@ -3,6 +3,7 @@ import math
 import operator
 from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import partial
+from typing import Self
 from . import partials  # type: ignore
 
 
@@ -53,17 +54,17 @@ class F(partial):
         args = super().__getattribute__('args')
         return iter(args[0] if args else [super().__getattribute__('func')])
 
-    def __getattribute__(self, attr: str) -> 'F':
+    def __getattribute__(self, attr: str) -> Self:
         """Return `attrgetter`."""
         if attr.startswith('__') and attr.endswith('__'):
             return super().__getattribute__(attr)
         return type(self)(self, operator.attrgetter(attr))
 
-    def __getitem__(self, item) -> 'F':
+    def __getitem__(self, item) -> Self:
         """Return `itemgetter`."""
         return type(self)(self, operator.itemgetter(item))
 
-    def __round__(self, ndigits: int | None = None) -> 'F':
+    def __round__(self, ndigits: int | None = None) -> Self:
         """Return `round(...)`."""
         return type(self)(self, round if ndigits is None else partial(round, ndigits=ndigits))
 

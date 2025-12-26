@@ -1,4 +1,4 @@
-#define Py_LIMITED_API 0x03100000
+#define Py_LIMITED_API 0x03110000
 #include "Python.h"
 
 typedef struct {

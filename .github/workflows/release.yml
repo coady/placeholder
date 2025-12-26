@@ -31,7 +31,7 @@ jobs:
         platforms: all
     - uses: pypa/cibuildwheel@v3.3
       env:
-        CIBW_BUILD: cp310-*
+        CIBW_BUILD: cp311-*
         CIBW_ARCHS_LINUX: auto aarch64
         CIBW_ARCHS_MACOS: x86_64 arm64
     - uses: actions/upload-artifact@v6
