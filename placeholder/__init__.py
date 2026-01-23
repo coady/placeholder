@@ -1,3 +1,4 @@
+import functools
 import itertools
 import math
 import operator
@@ -6,13 +7,6 @@ from functools import partial
 from typing import Self
 
 from . import partials  # type: ignore
-
-
-def update_wrapper(wrapper: Callable, func: Callable):
-    wrapper.__doc__ = func.__doc__
-    wrapper.__name__ = func.__name__  # type: ignore
-    wrapper.__annotations__["return"] = "F"
-    return wrapper
 
 
 def pipe(funcs: Sequence[Callable], *args, **kwargs):
@@ -31,11 +25,11 @@ def methods(func: Callable):
     def right(self, other):
         return type(self)(self, partials.partial(func, other).right)
 
-    return update_wrapper(left, func), update_wrapper(right, func)
+    return functools.update_wrapper(left, func), functools.update_wrapper(right, func)
 
 
 def unary(func: Callable):
-    return update_wrapper(lambda self: type(self)(self, func), func)
+    return functools.update_wrapper(lambda self: type(self)(self, func), func)
 
 
 class F(partial):
