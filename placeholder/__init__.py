@@ -6,7 +6,7 @@ from collections.abc import Callable, Iterable, Iterator, Sequence
 from functools import partial
 from typing import Self
 
-from . import partials  # type: ignore
+from .partials import rpartial  # type: ignore
 
 
 def pipe(funcs: Sequence[Callable], *args, **kwargs):
@@ -20,10 +20,10 @@ def methods(func: Callable):
     def left(self, other):
         if isinstance(other, F):
             return type(self)(self, func)
-        return type(self)(self, partials.partial(func, other).left)
+        return type(self)(self, rpartial(func, other))
 
     def right(self, other):
-        return type(self)(self, partials.partial(func, other).right)
+        return type(self)(self, partial(func, other))
 
     return functools.update_wrapper(left, func), functools.update_wrapper(right, func)
 

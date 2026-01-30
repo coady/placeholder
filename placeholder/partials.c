@@ -1,96 +1,44 @@
 #include "Python.h"
 
-typedef struct {
-    PyObject_HEAD
-    PyObject *func;
-    PyObject *arg;
-} partial;
-
-static void
-partial_dealloc(partial *self)
+static PyObject *
+rpartial_call(PyObject *self, PyObject *left)
 {
-    Py_DecRef(self->func);
-    Py_DecRef(self->arg);
-    PyObject_Free(self);
+    PyObject *func = PyTuple_GetItem(self, 0);
+    PyObject *right = PyTuple_GetItem(self, 1);
+    if (!func || !right)
+        return NULL;
+    return PyObject_CallFunctionObjArgs(func, left, right, NULL);
 }
 
-static int
-partial_init(partial *self, PyObject *args, PyObject *kwargs)
-{
-    static char *kwlist[] = {"func", "arg", NULL};
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, "OO:partial", kwlist, &self->func, &self->arg))
-        return -1;
-    Py_IncRef(self->func);
-    Py_IncRef(self->arg);
-    return 0;
-}
+static PyMethodDef rpartial_call_def = {
+    .ml_name = "rpartial",
+    .ml_meth = (PyCFunction)rpartial_call,
+    .ml_flags = METH_O,
+    .ml_doc = "Binary function with bound right argument.",
+};
 
 static PyObject *
-partial_str(partial *self)
+rpartial(PyObject *module, PyObject *args)
 {
-    return PyUnicode_FromFormat("placeholder.partial(%S, %S)", self->func, self->arg);
+    PyObject *func, *right;
+    if (!PyArg_UnpackTuple(args, "rpartial", 2, 2, &func, &right))
+        return NULL;
+    return PyCFunction_NewEx(&rpartial_call_def, args, module);
 }
 
-static PyObject *
-partial_left(partial *self, PyObject *arg)
-{
-    return PyObject_CallFunctionObjArgs(self->func, arg, self->arg, NULL);
-}
-
-static PyObject *
-partial_right(partial *self, PyObject *arg)
-{
-    return PyObject_CallFunctionObjArgs(self->func, self->arg, arg, NULL);
-}
-
-static PyMethodDef partial_methods[] = {
-    {"left", (PyCFunction)partial_left, METH_O, "Call binary function with left arg."},
-    {"right", (PyCFunction)partial_right, METH_O, "Call binary function with right arg."},
-    {NULL}  /* Sentinel */
+static PyMethodDef partials_methods[] = {
+    {"rpartial", (PyCFunction)rpartial, METH_VARARGS, "Return lambda left: func(left, right)."},
+    {NULL}
 };
 
-static PyType_Slot partial_slots[] = {
-    {Py_tp_doc, PyDoc_STR("Partially bound binary function.")},
-    {Py_tp_dealloc, partial_dealloc},
-    {Py_tp_init, partial_init},
-    {Py_tp_str, partial_str},
-    {Py_tp_methods, partial_methods},
-    {0, NULL}
-};
-
-static PyType_Spec partial_spec = {
-    "placeholder.partial",
-    sizeof(partial),
-    0,
-    Py_TPFLAGS_DEFAULT,
-    partial_slots,
-};
-
-static int
-partials_mod_exec(PyObject *module)
-{
-    PyObject *PartialType = PyType_FromSpec(&partial_spec);
-    if (!PartialType)
-        return -1;
-    if (!PyModule_AddObject(module, "partial", PartialType))
-        return 0;
-    Py_DecRef(PartialType);
-    return -1;
-}
-
-static PyModuleDef_Slot partials_slots[] = {
-    {Py_mod_exec, partials_mod_exec},
-    {0, NULL}
-};
-
-static PyModuleDef partialsmodule = {
+static PyModuleDef partials_module = {
     PyModuleDef_HEAD_INIT,
     .m_name = "partials",
     .m_doc = PyDoc_STR("Partially bound binary functions."),
-    .m_slots = partials_slots,
+    .m_methods = partials_methods,
 };
 
 PyMODINIT_FUNC PyInit_partials(void)
 {
-    return PyModuleDef_Init(&partialsmodule);
+    return PyModuleDef_Init(&partials_module);
 }
