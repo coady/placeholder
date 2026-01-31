@@ -1,67 +1,59 @@
 import functools
-import itertools
 import math
 import operator
-from collections.abc import Callable, Iterable, Iterator, Sequence
+from collections.abc import Callable, Iterable
 from functools import partial
 from typing import Self
 
 from .partials import rpartial  # type: ignore
 
 
-def pipe(funcs: Sequence[Callable], *args, **kwargs):
-    value = funcs[0](*args, **kwargs)
-    for func in funcs[1:]:
-        value = func(value)
-    return value
+def composed(f: Callable, g: Callable, *args):
+    """Compose and call functions."""
+    return f(g(*args))
 
 
 def methods(func: Callable):
     def left(self, other):
         if isinstance(other, F):
-            return type(self)(self, func)
-        return type(self)(self, rpartial(func, other))
+            return type(self)(func)
+        if not hasattr(functools, "Placeholder"):  # <3.14
+            f = rpartial(func, other)
+            return type(self)(f) if self is _ else type(self)(composed, f, self)
+        f = type(self)(func, functools.Placeholder, other)
+        return f if self is _ else type(self)(composed, f, self)
 
     def right(self, other):
-        return type(self)(self, partial(func, other))
+        f = type(self)(func, other)
+        return f if self is _ else type(self)(composed, f, self)
 
-    return functools.update_wrapper(left, func), functools.update_wrapper(right, func)
+    return left, right
 
 
 def unary(func: Callable):
-    return functools.update_wrapper(lambda self: type(self)(self, func), func)
+    return lambda self: type(self)(func) if self is _ else type(self)(composed, func, self)
 
 
 class F(partial):
-    """Singleton for creating composite functions.
+    """Partial function with operator support."""
 
-    Args:
-        *funcs (Callable): ordered callables
-    """
+    def __iter__(self):
+        yield super().__getattribute__("func")
+        yield from super().__getattribute__("args")
 
-    def __new__(cls, *funcs):
-        funcs = (func if isinstance(func, cls) else [func] for func in funcs)
-        funcs = tuple(itertools.chain(*funcs))
-        return partial.__new__(cls, *(funcs if len(funcs) == 1 else (pipe, funcs)))  # type: ignore
+    def __getattribute__(self, name: str) -> Self:
+        if name.startswith("__") and name.endswith("__"):
+            return super().__getattribute__(name)
+        return unary(operator.attrgetter(name))(self)
 
-    def __iter__(self) -> Iterator[Callable]:
-        """Return composed functions in order."""
-        args = super().__getattribute__("args")
-        return iter(args[0] if args else [super().__getattribute__("func")])
-
-    def __getattribute__(self, attr: str) -> Self:
-        """Return `attrgetter`."""
-        if attr.startswith("__") and attr.endswith("__"):
-            return super().__getattribute__(attr)
-        return type(self)(self, operator.attrgetter(attr))
-
-    def __getitem__(self, item) -> Self:
-        """Return `itemgetter`."""
-        return type(self)(self, operator.itemgetter(item))
+    def __getitem__(self, key) -> Self:
+        return unary(operator.itemgetter(key))(self)
 
     def __round__(self, ndigits: int | None = None) -> Self:
-        """Return `round(...)`."""
-        return type(self)(self, round if ndigits is None else partial(round, ndigits=ndigits))
+        if ndigits is None:
+            return unary(round)(self)
+        f = type(self)(round, ndigits=ndigits)
+        return f if self is _ else type(self)(composed, f, self)
 
     __neg__ = unary(operator.neg)
     __pos__ = unary(operator.pos)
@@ -92,10 +84,12 @@ class F(partial):
     __xor__, __rxor__ = methods(operator.xor)
     __or__, __ror__ = methods(operator.or_)
 
-    __eq__ = methods(operator.eq)[0]
-    __ne__ = methods(operator.ne)[0]
-    __lt__, __gt__ = methods(operator.lt)
-    __le__, __ge__ = methods(operator.le)
+    __eq__ = methods(operator.eq)[1]
+    __ne__ = methods(operator.ne)[1]
+    __lt__ = methods(operator.gt)[1]
+    __gt__ = methods(operator.lt)[1]
+    __le__ = methods(operator.ge)[1]
+    __ge__ = methods(operator.le)[1]
 
 
 class M:
@@ -103,7 +97,7 @@ class M:
 
     def __getattr__(cls, name: str) -> F:
         """Return a `methodcaller` constructor."""
-        return F(partial(operator.methodcaller, name), F)
+        return F(operator.methodcaller, name)
 
     def __call__(self, *names: str) -> F:
         """Return a tupled `attrgetter`."""
@@ -114,5 +108,5 @@ class M:
         return F(operator.itemgetter(*keys))
 
 
-_ = F()
+_ = F(composed)
 m = M()

@@ -19,7 +19,7 @@ _.age < 18     # lambda obj: obj.age < 18
 _[key] ** 2    # lambda obj: obj[key] ** 2
 ```
 
-Note `_` has special meaning in other contexts, such as the previous output in interactive shells. Assign to a different name as needed. Kotlin uses `it`, but in Python `it` is a common short name for an iterator.
+Note `_` has special meaning in other contexts, such as the previous output in interactive shells. Assign to a different name as needed.
 
 `_` is a singleton of an `F` class, and `F` expressions can also be used with functions.
 
@@ -29,24 +29,18 @@ from placeholder import F
 -F(len)        # lambda obj: -len(obj)
 ```
 
-All applicable double underscore methods are supported.
+All applicable double underscore methods are supported. Some methods coerce types: `len`, `bool`, `in`.
 
 ## Performance
-Every effort is made to optimize the placeholder instance. It's 20-40x faster than similar libraries on PyPI.
+The placeholder instance leverages `functools.partial` and `Placeholder` for optimization. It is significantly faster than similar libraries on PyPI.
 
-Placeholders are also iterable, allowing direct access to the underlying functions.
+Placeholders are provisionally iterable, allowing access to the underlying function and bound args.
 
 ```python
 (func,) = _.age  # operator.attrgetter('age')
 ```
 
-Performance should generally be comparable to inlined expressions, and faster than lambda. Below are some example benchmarks.
-
-```python
-min(data, key=operator.itemgetter(-1))    # 1x
-min(data, key=_[-1])                      # 1.3x
-min(data, key=lambda x: x[-1])            # 1.6x
-```
+Performance should generally be comparable to inlined expressions, and faster than lambda.
 
 ## Installation
 ```console
