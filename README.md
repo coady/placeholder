@@ -9,7 +9,7 @@
 [![image](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![ty](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ty/main/assets/badge/v0.json)](https://github.com/astral-sh/ty)
 
-A `placeholder` uses operator overloading to create partially bound functions on-the-fly. When used in a binary expression, it will return a callable object with the other argument bound. It's useful for replacing `lambda` in functional programming, and resembles Scala's placeholders.
+A `placeholder` uses operator overloading to create partially bound functions on-the-fly. When used in a binary expression, it will return a callable object with the other argument bound. It's useful for replacing `lambda` in functional programming.
 
 ## Usage
 ```python
@@ -34,13 +34,13 @@ All applicable double underscore methods are supported. Some methods coerce type
 ## Performance
 The placeholder instance leverages `functools.partial` and `Placeholder` for optimization. It is significantly faster than similar libraries on PyPI.
 
+Performance should generally be comparable to inlined expressions, and faster than lambda. There is an optional legacy C extension which provides a small speedup for right-bound functions in Python <3.14 only.
+
 Placeholders are provisionally iterable, allowing access to the underlying function and bound args.
 
 ```python
 (func,) = _.age  # operator.attrgetter('age')
 ```
-
-Performance should generally be comparable to inlined expressions, and faster than lambda.
 
 ## Installation
 ```console

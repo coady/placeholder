@@ -5,7 +5,12 @@ from collections.abc import Callable, Iterable
 from functools import partial
 from typing import Self
 
-from .partials import rpartial  # type: ignore
+try:
+    from .partials import rpartial  # type: ignore
+except ImportError:
+
+    def rpartial(func, right):  # pragma: no cover
+        return lambda left, f=func, r=right: f(left, r)
 
 
 def composed(f: Callable, g: Callable, *args):

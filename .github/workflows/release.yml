@@ -12,10 +12,10 @@ jobs:
     steps:
     - uses: actions/checkout@v6
     - uses: astral-sh/setup-uv@v7
-    - run: uv build --sdist
+    - run: uv build
     - uses: actions/upload-artifact@v6
       with:
-        name: artifact-sdist
+        name: artifact-dist
         path: dist/
 
   wheels:
