@@ -1,10 +1,8 @@
-all:
+check:
 	uv run python setup.py build_ext -i
-
-check: all
 	uv run pytest -s --cov
 
-bench: all
+bench:
 	uv run pytest --codspeed
 
 lint:
@@ -12,5 +10,5 @@ lint:
 	uvx ruff format --check
 	uvx ty check placeholder
 
-html: all
+html:
 	uv run --group docs mkdocs build

@@ -7,11 +7,13 @@ permissions:
 on: [workflow_dispatch]
 
 jobs:
-  sdist:
+  dist:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v6
     - uses: astral-sh/setup-uv@v7
+      with:
+        python-version: '3.14'
     - run: uv build
     - uses: actions/upload-artifact@v6
       with:
@@ -40,7 +42,7 @@ jobs:
         path: wheelhouse/
 
   publish:
-    needs: [sdist, wheels]
+    needs: [dist, wheels]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/download-artifact@v7
