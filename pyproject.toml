@@ -31,14 +31,14 @@ Documentation = "https://coady.github.io/placeholder"
 Changelog = "https://github.com/coady/placeholder/blob/main/CHANGELOG.md"
 Issues = "https://github.com/coady/placeholder/issues"
 
-[tool.setuptools]
-packages = ["placeholder"]
+[tool.setuptools.package-data]
+placeholder = ["*.c"]
 
 [tool.ruff]
 line-length = 100
 
 [tool.ruff.lint]
-select = ["I"]
+extend-select = ["I"]
 
 [tool.coverage.run]
 source = ["placeholder"]
