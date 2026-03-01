@@ -2,7 +2,6 @@ import functools
 import math
 import operator
 from collections.abc import Callable, Iterable
-from functools import partial
 from typing import Self
 
 try:
@@ -18,28 +17,32 @@ def composed(f: Callable, g: Callable, *args):
     return f(g(*args))
 
 
+def compose(func: Callable, self):
+    """Compose function with `F` instance."""
+    if self is _:
+        return func if isinstance(func, F) else F(func)
+    return F(composed, func, self)
+
+
 def methods(func: Callable):
     def left(self, other):
         if isinstance(other, F):
-            return type(self)(func)
+            return F(func)
         if not hasattr(functools, "Placeholder"):  # <3.14
-            f = rpartial(func, other)
-            return type(self)(f) if self is _ else type(self)(composed, f, self)
-        f = type(self)(func, functools.Placeholder, other)
-        return f if self is _ else type(self)(composed, f, self)
+            return compose(rpartial(func, other), self)
+        return compose(F(func, functools.Placeholder, other), self)
 
     def right(self, other):
-        f = type(self)(func, other)
-        return f if self is _ else type(self)(composed, f, self)
+        return compose(F(func, other), self)
 
     return left, right
 
 
 def unary(func: Callable):
-    return lambda self: type(self)(func) if self is _ else type(self)(composed, func, self)
+    return lambda self: compose(func, self)
 
 
-class F(partial):
+class F(functools.partial):
     """Partial function with operator support."""
 
     def __iter__(self):
@@ -49,16 +52,13 @@ class F(partial):
     def __getattribute__(self, name: str) -> Self:
         if name.startswith("__") and name.endswith("__"):
             return super().__getattribute__(name)
-        return unary(operator.attrgetter(name))(self)
+        return compose(operator.attrgetter(name), self)
 
     def __getitem__(self, key) -> Self:
-        return unary(operator.itemgetter(key))(self)
+        return compose(operator.itemgetter(key), self)
 
     def __round__(self, ndigits: int | None = None) -> Self:
-        if ndigits is None:
-            return unary(round)(self)
-        f = type(self)(round, ndigits=ndigits)
-        return f if self is _ else type(self)(composed, f, self)
+        return compose(round if ndigits is None else F(round, ndigits=ndigits), self)
 
     __neg__ = unary(operator.neg)
     __pos__ = unary(operator.pos)
