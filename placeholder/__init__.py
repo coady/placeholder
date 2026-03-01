@@ -1,6 +1,7 @@
 import functools
 import math
 import operator
+import types
 from collections.abc import Callable, Iterable
 from typing import Self
 
@@ -24,22 +25,31 @@ def compose(func: Callable, self):
     return F(composed, func, self)
 
 
+def left(func: Callable, self, other):
+    """Compose function with left placeholder."""
+    if isinstance(other, F):
+        return F(func)
+    if not hasattr(functools, "Placeholder"):  # <3.14
+        return compose(rpartial(func, other), self)
+    return compose(F(func, functools.Placeholder, other), self)
+
+
+def right(func, self, other):
+    """Compose function with right placeholder."""
+    return compose(F(func, other), self)
+
+
+class method(functools.partial):  # <3.14
+    def __get__(self, instance, owner):
+        return self if instance is None else types.MethodType(self, instance)
+
+
 def methods(func: Callable):
-    def left(self, other):
-        if isinstance(other, F):
-            return F(func)
-        if not hasattr(functools, "Placeholder"):  # <3.14
-            return compose(rpartial(func, other), self)
-        return compose(F(func, functools.Placeholder, other), self)
-
-    def right(self, other):
-        return compose(F(func, other), self)
-
-    return left, right
+    return method(left, func), method(right, func)
 
 
 def unary(func: Callable):
-    return lambda self: compose(func, self)
+    return method(compose, func)
 
 
 class F(functools.partial):
