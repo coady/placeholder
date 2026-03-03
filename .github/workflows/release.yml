@@ -15,7 +15,7 @@ jobs:
       with:
         python-version: '3.14'
     - run: uv build
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: artifact-dist
         path: dist/
@@ -36,7 +36,7 @@ jobs:
         CIBW_BUILD: cp311-*
         CIBW_ARCHS_LINUX: auto aarch64
         CIBW_ARCHS_MACOS: x86_64 arm64
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       with:
         name: artifact-${{ matrix.os }}
         path: wheelhouse/
@@ -45,7 +45,7 @@ jobs:
     needs: [dist, wheels]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/download-artifact@v7
+    - uses: actions/download-artifact@v8
       with:
         path: dist/
         pattern: artifact-*
