@@ -39,17 +39,13 @@ def right(func, self, other):
     return compose(F(func, other), self)
 
 
-class method(functools.partial):  # <3.14
+class partial(functools.partial):  # <3.14
     def __get__(self, instance, owner):
         return self if instance is None else types.MethodType(self, instance)
 
 
 def methods(func: Callable):
-    return method(left, func), method(right, func)
-
-
-def unary(func: Callable):
-    return method(compose, func)
+    return partial(left, func), partial(right, func)
 
 
 class F(functools.partial):
@@ -70,16 +66,16 @@ class F(functools.partial):
     def __round__(self, ndigits: int | None = None) -> Self:
         return compose(round if ndigits is None else F(round, ndigits=ndigits), self)
 
-    __neg__ = unary(operator.neg)
-    __pos__ = unary(operator.pos)
-    __invert__ = unary(operator.invert)
+    __neg__ = partial(compose, operator.neg)
+    __pos__ = partial(compose, operator.pos)
+    __invert__ = partial(compose, operator.invert)
 
-    __abs__ = unary(abs)
-    __reversed__ = unary(reversed)
+    __abs__ = partial(compose, abs)
+    __reversed__ = partial(compose, reversed)
 
-    __trunc__ = unary(math.trunc)
-    __floor__ = unary(math.floor)
-    __ceil__ = unary(math.ceil)
+    __trunc__ = partial(compose, math.trunc)
+    __floor__ = partial(compose, math.floor)
+    __ceil__ = partial(compose, math.ceil)
 
     __add__, __radd__ = methods(operator.add)
     __sub__, __rsub__ = methods(operator.sub)
