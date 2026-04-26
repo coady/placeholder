@@ -11,6 +11,8 @@ def test_object():
     assert F({}.get) > 1
     assert (_ == 1)(1.0) is (1 == _)(1.0) is True
     assert list(F(len)) == [len]
+    with pytest.raises(TypeError):
+        _ + (_ + 1)
 
 
 @pytest.mark.benchmark

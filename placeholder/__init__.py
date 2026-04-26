@@ -27,8 +27,10 @@ def compose(func: Callable, self):
 
 def left(func: Callable, self, other):
     """Compose function with left placeholder."""
-    if isinstance(other, F):
+    if other is _:
         return F(func)
+    if isinstance(other, F):
+        raise TypeError("cannot compose multiple `F` expressions")
     if not hasattr(functools, "Placeholder"):  # <3.14
         return compose(rpartial(func, other), self)
     return compose(F(func, functools.Placeholder, other), self)
@@ -104,9 +106,9 @@ class F(functools.partial):
 
 
 class M:
-    """Singleton for creating method callers and multi-valued getters."""
+    """Creates method callers and multi-valued getters."""
 
-    def __getattr__(cls, name: str) -> F:
+    def __getattr__(self, name: str) -> F:
         """Return a `methodcaller` constructor."""
         return F(operator.methodcaller, name)
 
