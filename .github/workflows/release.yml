@@ -31,7 +31,7 @@ jobs:
       uses: docker/setup-qemu-action@v4
       with:
         platforms: all
-    - uses: pypa/cibuildwheel@v3.4
+    - uses: pypa/cibuildwheel@v4.0
       env:
         CIBW_BUILD: cp311-*
         CIBW_ARCHS_LINUX: auto aarch64
