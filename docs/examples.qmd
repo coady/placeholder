@@ -1,0 +1,67 @@
+---
+title: "Examples"
+---
+
+## `F` and `_` (singleton)
+```{python}
+from placeholder import _
+
+_.real
+```
+
+```{python}
+nums = (0 + 2j), (1 + 1j), (2 + 0j)
+min(nums, key=_.real)
+```
+
+```{python}
+min(nums, key=_.imag)
+```
+
+```{python}
+_[0]
+```
+
+```{python}
+pairs = "ac", "bb", "ca"
+min(pairs, key=_[0])
+```
+
+```{python}
+min(pairs, key=_[-1])
+```
+
+```{python}
+import itertools
+
+list(itertools.accumulate(range(1, 6), _ * _))
+```
+
+```{python}
+list(itertools.filterfalse(_ % 2, range(10)))
+```
+
+```{python}
+list(filter(_ % 2 == 0, range(10)))
+```
+
+```{python}
+list(filter(abs(_) < 1, [-1, 0, 1]))
+```
+
+## `M` and `m` (singleton)
+Support for `attrgetter(*)`, `itemgetter(*)`, and `methodcaller`.
+
+```{python}
+from placeholder import m
+
+m("real", "imag")
+```
+
+```{python}
+m[0, -1]
+```
+
+```{python}
+m.split("-")
+```

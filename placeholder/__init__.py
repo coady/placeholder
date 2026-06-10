@@ -51,21 +51,43 @@ def methods(func: Callable):
 
 
 class F(functools.partial):
-    """Partial function with operator support."""
+    """Partial function with operator support.
+
+    Builds partially-bound callables via operator overloading. In a binary
+    expression, the other operand is bound and a callable is returned.
+
+    The module singleton `_` is an instance of this class.
+
+    Supported Operators
+    -------------------
+    All applicable double-underscore methods are supported, including
+    arithmetic (`+`, `-`, `*`, `/`, `//`, `%`, `**`, `@`),
+    bitwise (`&`, `|`, `^`, `<<`, `>>`), unary (`-`, `+`, `~`,
+    `abs`, `round`, `trunc`, `floor`, `ceil`, `reversed`),
+    and comparison (`==`, `!=`, `<`, `>`, `<=`, `>=`).
+
+    Unsupported Operators
+    -------------------
+    `len`, `bool`, and `in` coerce the output type.
+    """
 
     def __iter__(self):
+        """Yield the underlying function and bound arguments."""
         yield super().__getattribute__("func")
         yield from super().__getattribute__("args")
 
     def __getattribute__(self, name: str) -> Self:
+        """Return an `attrgetter`-based callable for `name`."""
         if name.startswith("__") and name.endswith("__"):
             return super().__getattribute__(name)
         return compose(operator.attrgetter(name), self)
 
     def __getitem__(self, key) -> Self:
+        """Return an `itemgetter`-based callable for `key`."""
         return compose(operator.itemgetter(key), self)
 
     def __round__(self, ndigits: int | None = None) -> Self:
+        """Return a callable that applies `round`."""
         return compose(round if ndigits is None else F(round, ndigits=ndigits), self)
 
     __neg__ = partial(compose, operator.neg)
@@ -106,7 +128,10 @@ class F(functools.partial):
 
 
 class M:
-    """Creates method callers and multi-valued getters."""
+    """Creates method callers and multi-valued getters.
+
+    The module singleton `m` is an instance of this class.
+    """
 
     def __getattr__(self, name: str) -> F:
         """Return a `methodcaller` constructor."""

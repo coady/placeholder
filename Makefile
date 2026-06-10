@@ -11,4 +11,4 @@ lint:
 	uvx ty check placeholder
 
 html:
-	uv run --group docs mkdocs build
+	uv run --group docs great-docs build

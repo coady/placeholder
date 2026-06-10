@@ -9,7 +9,7 @@ description = "Operator overloading for fast anonymous functions."
 readme = "README.md"
 requires-python = ">=3.11"
 license = "Apache-2.0"
-authors = [{name = "Aric Coady", email = "aric.coady@gmail.com"}]
+authors = [{name = "A. Coady"}]
 keywords = ["functional", "lambda", "underscore", "partial"]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -31,6 +31,9 @@ Documentation = "https://coady.github.io/placeholder"
 Changelog = "https://github.com/coady/placeholder/blob/main/CHANGELOG.md"
 Issues = "https://github.com/coady/placeholder/issues"
 
+[tool.setuptools]
+packages = ["placeholder"]
+
 [tool.setuptools.package-data]
 placeholder = ["*.c"]
 
@@ -49,4 +52,4 @@ markers = ["benchmark"]
 
 [dependency-groups]
 dev = ["setuptools", "pytest-cov", "pytest-codspeed", "pytest-parametrized"]
-docs = ["mkdocstrings[python]", "mkdocs-jupyter"]
+docs = ["great-docs"]
