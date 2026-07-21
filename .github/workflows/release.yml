@@ -41,6 +41,7 @@ jobs:
         CIBW_BUILD: cp311-*
         CIBW_ARCHS_LINUX: auto aarch64
         CIBW_ARCHS_MACOS: x86_64 arm64
+        CIBW_TEST_COMMAND: python -c "import placeholder.partials"
     - uses: actions/upload-artifact@v7
       with:
         name: artifact-${{ matrix.os }}
