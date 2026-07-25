@@ -13,10 +13,10 @@ A `placeholder` uses operator overloading to create partially bound functions on
 
 ## Usage
 ```python
-from placeholder import _     # single underscore
+from placeholder import _  # single underscore
 
-_.age < 18     # lambda obj: obj.age < 18
-_[key] ** 2    # lambda obj: obj[key] ** 2
+_.age < 18  # lambda obj: obj.age < 18
+_[key] ** 2  # lambda obj: obj[key] ** 2
 ```
 
 Note `_` has special meaning in other contexts, such as the previous output in interactive shells. Assign to a different name as needed.
@@ -26,7 +26,7 @@ Note `_` has special meaning in other contexts, such as the previous output in i
 ```python
 from placeholder import F
 
--F(len)        # lambda obj: -len(obj)
+-F(len)  # lambda obj: -len(obj)
 ```
 
 All applicable double underscore methods are supported. Some methods coerce types: `len`, `bool`, `in`.
